@@ -112,10 +112,20 @@ def build_issue(d):
 
 
 def build_index(issues):
+    import re
     out = [HEAD.replace("{title}", "AI Daily Letter")]
     out.append("""<header class="mast"><span class="tab">AI Daily Letter</span><h1>발행 목록</h1>
 <div class="meta"><span>평일 오전 8시(KST) 발행 · 전 세계 AI 도입·활용·규제 소식</span></div></header>
-<section class="front"><ul class="picks list">""")
+""")
+    monthly = sorted(glob.glob(os.path.join(ROOT, "monthly", "*.html")), reverse=True)
+    if monthly:
+        out.append('<section class="front"><h2>월간 간행물</h2><ul class="picks list">')
+        for f in monthly:
+            t = re.search(r"<title>(.*?)</title>", open(f, encoding="utf-8").read(), re.S)
+            name = os.path.basename(f)
+            out.append(f'<li><a href="monthly/{E(name)}">{E(t.group(1).strip() if t else name)}</a></li>')
+        out.append("</ul></section>")
+    out.append("""<section class="front"><h2>Daily Letter</h2><ul class="picks list">""")
     for d in issues:
         y, m, dd = d["date"].split("-")
         heads = " · ".join(p["title"].split("…")[0] for p in d["picks"])
