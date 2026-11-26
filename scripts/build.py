@@ -178,8 +178,7 @@ def build_home(issues, arts, monthly):
     else:
         mblock = """<div class="monthly"><span class="kick s">SKTL AI 월간 리뷰 · 2026년 11월호</span><h4>12월 1일(화) 첫 발행 예정</h4><p>한 달간 가장 임팩트 있었던 흐름을 Insight Report로 깊게 다루고, 10개 분야별 월간 리뷰와 규제 동향을 정리합니다.</p></div>"""
     nums = number_cards(L, "")
-    past = "".join(f'<li><a class="t" href="monthly/{E(f)}">{E(t)}<span>{E(f[:7].replace("-", "."))}</span></a></li>' for f, t in monthly[1:6]) \
-        or '<li><span class="meta" style="padding:11px 0;display:block">지난 호가 아직 없습니다 · 11월호(12월 1일 발행)가 첫 호입니다</span></li>'
+    past = "".join(f'<li><a href="{x["date"]}.html"><span class="t">제{x["issue"]}호 · {E(kdate(x["date"]))}</span><small>{E(x["picks"][0]["title"])} 외 Pick 4건</small></a></li>' for x in reversed(issues[-5:]))
     out = head(SITE_NAME, "") + header("", L) + f"""
 <div class="label"><h2>Today's Pick</h2><span>제{L['issue']}호 · 수집 범위 {E(L['range'])} · <a href="{L['date']}.html">이번 호 전체 보기</a></span></div>
 <div class="hero">{hero}<ol class="side">{side}</ol></div>
@@ -189,7 +188,7 @@ def build_home(issues, arts, monthly):
 <div class="lower">
 <section><div class="label"><h3>이번 주 주요 소식</h3><span>이번 주 Today's Pick 모음</span></div><ol class="week">{week}</ol></section>
 <section><div class="label"><h3>월간 리뷰</h3><a href="monthly/">전체 보기 ›</a></div>{mblock}
-<div class="label"><h3>월간 리뷰 지난 호</h3><a href="monthly/">전체 보기 ›</a></div><ul class="issues">{past}</ul></section>
+<div class="label"><h3>Daily Letter 지난 호</h3><a href="letters.html">전체 보기 ›</a></div><ul class="issues dl">{past}</ul></section>
 </div>""" + footer()
     write("index.html", out)
 
