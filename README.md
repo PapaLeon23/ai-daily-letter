@@ -1,6 +1,6 @@
 # AI Link
 
-SK텔링크 팀을 위한 AI 소식 포털입니다. 평일 오전 8시(KST) Daily Letter, 매월 첫 영업일 월간 리뷰를 발행합니다.
+SK텔링크 팀을 위한 AI 소식 포털입니다. 평일 아침 Daily Letter, 매월 첫 영업일 월간 리뷰를 발행합니다.
 사이트: https://papaleon23.github.io/ai-daily-letter/
 
 ## 구조
