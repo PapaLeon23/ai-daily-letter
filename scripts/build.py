@@ -161,6 +161,7 @@ def build_home(issues, arts, monthly):
         mblock = f"""<a class="monthly" href="monthly/{E(mf)}" style="display:block"><span class="kick s">최신호</span><h4 class="t">{E(mt)}</h4><p>Insight Report와 10개 분야별 월간 리뷰, 규제 동향을 정리했습니다.</p></a>"""
     else:
         mblock = """<div class="monthly"><span class="kick s">SKTL AI 월간 리뷰 · 2026년 11월호</span><h4>12월 1일(화) 첫 발행 예정</h4><p>한 달간 가장 임팩트 있었던 흐름을 Insight Report로 깊게 다루고, 10개 분야별 월간 리뷰와 규제 동향을 정리합니다.</p></div>"""
+    past = "".join(f'<li><a class="t" href="{d["date"]}.html">제{d["issue"]}호 · {E(kdate(d["date"]))}<span>Pick 5 · 분야별 {len(d["others"])}</span></a></li>' for d in reversed(issues[-5:]))
     out = head(SITE_NAME, "") + header("", L) + f"""
 <div class="label"><h2>Today's Pick</h2><span>제{L['issue']}호 · 수집 범위 {E(L['range'])} · <a href="{L['date']}.html">이번 호 전체 보기</a></span></div>
 <div class="hero">{hero}<ol class="side">{side}</ol></div>
@@ -168,7 +169,8 @@ def build_home(issues, arts, monthly):
 <div class="grid">{''.join(cards)}</div>
 <div class="lower">
 <section><div class="label"><h3>이번 주 주요 소식</h3><span>이번 주 Today's Pick 모음</span></div><ol class="week">{week}</ol></section>
-<section><div class="label"><h3>월간 리뷰</h3><a href="monthly/">전체 보기 ›</a></div>{mblock}</section>
+<section><div class="label"><h3>월간 리뷰</h3><a href="monthly/">전체 보기 ›</a></div>{mblock}
+<div class="label"><h3>지난 호</h3><a href="letters.html">전체 보기 ›</a></div><ul class="issues">{past}</ul></section>
 </div>""" + footer()
     write("index.html", out)
 
@@ -299,6 +301,15 @@ def build_monthly_index(issues):
     return monthly
 
 
+def build_letter_index(issues):
+    L = issues[-1]
+    rows = "".join(f'<li><span class="d">{short(d["date"])}</span><div><h3><a class="t" href="{d["date"]}.html">제{d["issue"]}호 · {E(kdate(d["date"]))}</a></h3><p>{E(" · ".join(p["title"] for p in d["picks"][:3]))}</p></div></li>' for d in reversed(issues))
+    out = head(f"지난 호 · {SITE_NAME}", "") + header("", L) + f"""
+<div class="page-head"><h1>지난 호</h1><p>Daily Letter 전체 {len(issues)}호 · 최신순</p></div>
+<ul class="list">{rows}</ul>""" + footer()
+    write("letters.html", out)
+
+
 def main():
     issues, arts = load()
     monthly = build_monthly_index(issues)
@@ -307,6 +318,7 @@ def main():
     build_articles(issues, arts)
     build_letters(issues)
     build_search(issues, arts)
+    build_letter_index(issues)
     print(f"built: {len(issues)} issue(s), {len(arts)} article(s), {len(monthly)} monthly")
 
 

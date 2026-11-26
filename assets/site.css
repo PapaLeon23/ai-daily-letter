@@ -29,6 +29,7 @@ a:focus-visible,input:focus-visible,button:focus-visible,select:focus-visible{ou
 .drop p{margin:0;padding:12px 14px;color:var(--mute);font-size:14px}
 nav.cats{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--rule);scrollbar-width:none}
 nav.cats a{flex:none;padding:12px 14px;font-weight:500;font-size:15px;border-bottom:3px solid transparent}
+nav.cats a:first-child{margin-left:auto}nav.cats a:last-child{margin-right:auto}
 nav.cats a:hover,nav.cats a[aria-current]{border-color:var(--ink)}
 nav.cats a[aria-current]{font-weight:700}
 /* section labels */
@@ -114,3 +115,7 @@ article.post .pts{font-size:17px;line-height:1.75}
 footer.site{margin-top:48px;border-top:3px solid var(--ink);padding:20px 0 44px;font-size:13px;color:var(--mute);display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:space-between}
 @media(max-width:860px){.hero,.lower{grid-template-columns:minmax(0,1fr)}.hero-main{border-right:0;padding-right:0;border-bottom:1px solid var(--rule)}.side{padding-left:0}}
 @media(max-width:600px){.search{max-width:none}.list>li{grid-template-columns:minmax(0,1fr);gap:2px}.pn{grid-template-columns:minmax(0,1fr)}.logo img{height:38px}}
+.issues{list-style:none;margin:0;padding:0}
+.issues a{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-top:1px solid var(--rule);font-size:15px}
+.issues li:first-child a{border-top:0}
+.issues a span{color:var(--mute);font-size:13px;flex:none}

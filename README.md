@@ -14,6 +14,7 @@
   - `sectors/<slug>.html` 분야 페이지 10개
   - `articles/<YYYY-MM-DD>-p1..p5.html` Today's Pick 기사, `articles/<YYYY-MM-DD>-01..NN.html` 분야별 소식 기사
   - `YYYY-MM-DD.html` 호별 Daily Letter
+  - `letters.html` 지난 호 목록
   - `monthly/index.html` 월간 리뷰 목록 (`monthly/YYYY-MM.html`은 월간 작업이 직접 작성, 스타일은 `assets/site.css` 사용)
 - `assets/site.css` 공통 스타일, `assets/sktelink-logo.png` CI
 
