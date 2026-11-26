@@ -124,7 +124,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')dr.classList.remove(
 
 def footer():
     return f"""
-<footer class="site"><span>{SITE_NAME} · 평일 오전 8시(KST) 발행 · 전 세계 AI 도입·활용·규제 소식</span><span>요약은 원문을 바탕으로 새로 작성했으며, 기사 원문의 저작권은 각 매체에 있습니다.</span></footer>
+<footer class="site"><span>{SITE_NAME} · 평일 아침 발행 · 전 세계 AI 도입·활용·규제 소식</span><span>요약은 원문을 바탕으로 새로 작성했으며, 기사 원문의 저작권은 각 매체에 있습니다.</span></footer>
 </div>
 {SEARCH_JS}
 </body>
