@@ -162,11 +162,20 @@ def build_home(issues, arts, monthly):
         mblock = f"""<a class="monthly" href="monthly/{E(mf)}" style="display:block"><span class="kick s">최신호</span><h4 class="t">{E(mt)}</h4><p>Insight Report와 10개 분야별 월간 리뷰, 규제 동향을 정리했습니다.</p></a>"""
     else:
         mblock = """<div class="monthly"><span class="kick s">SKTL AI 월간 리뷰 · 2026년 11월호</span><h4>12월 1일(화) 첫 발행 예정</h4><p>한 달간 가장 임팩트 있었던 흐름을 Insight Report로 깊게 다루고, 10개 분야별 월간 리뷰와 규제 동향을 정리합니다.</p></div>"""
+    amap = {a["id"]: a for a in L["arts"]}
+    ncards = []
+    for nb in L.get("numbers", []):
+        a = amap.get(f"{L['date']}-{nb['ref']}")
+        if not a:
+            continue
+        ncards.append(f"""<a class="ncard" href="articles/{a['id']}.html"><span class="kick s">{E(a['sec'])}</span><strong class="nv">{E(nb['value'])}</strong><span class="nl">{E(nb['label'])}</span><span class="ns">{E(nb.get('source', ''))} · <span class="u">관련 기사 →</span></span></a>""")
+    nums = f"""<div class="label"><h2>숫자로 보는 오늘</h2><span>제{L['issue']}호 기사에서 뽑은 핵심 수치 · 누르면 해당 기사로 이동</span></div><div class="ngrid">{''.join(ncards)}</div>""" if ncards else ""
     past = "".join(f'<li><a class="t" href="monthly/{E(f)}">{E(t)}<span>{E(f[:7].replace("-", "."))}</span></a></li>' for f, t in monthly[1:6]) \
         or '<li><span class="meta" style="padding:11px 0;display:block">지난 호가 아직 없습니다 · 11월호(12월 1일 발행)가 첫 호입니다</span></li>'
     out = head(SITE_NAME, "") + header("", L) + f"""
 <div class="label"><h2>Today's Pick</h2><span>제{L['issue']}호 · 수집 범위 {E(L['range'])} · <a href="{L['date']}.html">이번 호 전체 보기</a></span></div>
 <div class="hero">{hero}<ol class="side">{side}</ol></div>
+{nums}
 <div class="label"><h2>분야별 소식</h2><span>분야를 누르면 해당 분야 전체 기사로 이동합니다</span></div>
 <div class="grid">{''.join(cards)}</div>
 <div class="lower">

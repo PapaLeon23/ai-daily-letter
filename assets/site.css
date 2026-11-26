@@ -140,3 +140,15 @@ footer.site{margin-top:48px;border-top:3px solid var(--ink);padding:20px 0 44px;
 .secchips a:hover{border-color:var(--ink)}
 @media(max-width:960px){.post-grid{grid-template-columns:minmax(0,1fr)}}
 .side-box .toc li a{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0}
+/* number cards */
+.ngrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.ncard{display:flex;flex-direction:column;gap:6px;background:var(--panel);padding:18px 18px 16px;border-top:3px solid var(--ink);transition:transform .15s}
+.ncard:hover{transform:translateY(-2px)}
+.ncard:hover .u{text-decoration:underline;text-underline-offset:3px}
+.nv{font:700 clamp(30px,3.4vw,42px)/1.1 "Noto Serif KR",serif;color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
+.nl{font-size:15px;line-height:1.5;flex:1}
+.ns{font-size:12px;color:var(--mute)}
+.ns .u{color:var(--slate)}
+@media (prefers-reduced-motion:reduce){.ncard{transition:none}.ncard:hover{transform:none}}
+@media(max-width:900px){.ngrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.ngrid{grid-template-columns:minmax(0,1fr)}}
