@@ -24,7 +24,9 @@ a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid var(-
 .top{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--mute);padding:14px 0 0}
 .mast{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:14px 0 16px;border-bottom:3px solid var(--ink)}
 .logo{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.logo b{border:1.5px dashed var(--mute);color:var(--mute);font:500 13px/1.2 "Noto Sans KR",sans-serif;padding:8px 10px;align-self:center}
+.logo{align-items:center!important;gap:14px!important}.logo img{height:48px;width:auto;display:block}
+.logo span{border-left:1.5px solid var(--rule);padding-left:14px}
+@media (prefers-color-scheme:dark){.logo img{background:#fff;padding:4px 6px;border-radius:4px}}
 .logo span{font:700 clamp(28px,4.4vw,44px)/1 "Noto Serif KR",serif}
 .search{position:relative;flex:1 1 300px;max-width:420px}
 .search input{width:100%;height:46px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);font:16px "Noto Sans KR",sans-serif;padding:0 46px 0 14px}
@@ -92,11 +94,11 @@ footer{margin-top:48px;border-top:3px solid var(--ink);padding:20px 0 44px;font-
 </style>
 </head>
 <body>
-<div class="notice">홈 화면 시안입니다 · 로고는 SK텔링크 CI 파일을 받으면 교체 · 분야 링크는 본 제작 때 연결</div>
+<div class="notice">홈 화면 시안입니다 · 분야 링크는 본 제작 때 연결</div>
 <div class="wrap">
 <div class="top"><span>2026년 11월 26일 (목) · 제1호 발행</span><span>평일 오전 8시(KST) 발행 · 전 세계 AI 도입·활용·규제 소식</span></div>
 <header class="mast">
-<a class="logo" href="./"><b>SK텔링크 CI 자리</b><span>SKTL AI Daily Letter</span></a>
+<a class="logo" href="./" aria-label="SKTL AI Daily Letter 홈"><img src="../assets/sktelink-logo.png" alt="SK텔링크" width="104" height="48"><span>AI Daily Letter</span></a>
 <form class="search" role="search" id="sf"><input id="q" type="search" placeholder="기사 검색 (예: 로보택시, 규제, 금융)" aria-label="기사 검색" autocomplete="off"><button type="submit" aria-label="검색">⌕</button><div class="results" id="res" aria-live="polite"></div></form>
 </header>
 <nav class="cats" aria-label="분야"><a href="#">ICT/통신</a><a href="#">미디어</a><a href="#">AI/빅데이터</a><a href="#">모빌리티</a><a href="#">로봇</a><a href="#">헬스케어</a><a href="#">소비재</a><a href="#">금융</a><a href="#">제조·에너지</a><a href="#">공공·정책</a><a href="#monthly">월간 리뷰</a></nav>
