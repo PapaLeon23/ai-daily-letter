@@ -94,7 +94,7 @@ def header(R, latest, current=None):
     nav = "".join(f'<a href="{R}sectors/{s}.html"{" aria-current=page" if current == n else ""}>{E(n)}</a>' for n, s in SECTORS)
     nav += f'<a href="{R}monthly/"{" aria-current=page" if current == "monthly" else ""}>월간 리뷰</a>'
     return f"""
-<div class="top"><span>{E(kdate(latest['date']))} · 제{latest['issue']}호 발행</span><span>평일 오전 8시(KST) 발행 · 전 세계 AI 도입·활용·규제 소식</span></div>
+<div class="top"><span>{E(kdate(latest['date']))} · 제{latest['issue']}호 발행</span></div>
 <header class="mast">
 <a class="logo" href="{R}index.html" aria-label="{SITE_NAME} 홈"><img src="{R}assets/sktelink-logo.png" alt="SK텔링크" width="96" height="46"><span>AI Daily Letter</span></a>
 <form class="search" role="search" action="{R}search.html" method="get" data-root="{R}"><input name="q" type="search" placeholder="기사 검색 (예: 로보택시, 규제, 금융)" aria-label="기사 검색" autocomplete="off"><button type="submit">검색</button><div class="drop" aria-live="polite"></div></form>
@@ -120,7 +120,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')dr.classList.remove(
 
 def footer():
     return f"""
-<footer class="site"><span>{SITE_NAME} · 팀 내부 공유용 브리핑</span><span>요약은 원문을 바탕으로 새로 작성했으며, 기사 원문의 저작권은 각 매체에 있습니다.</span></footer>
+<footer class="site"><span>{SITE_NAME} · 평일 오전 8시(KST) 발행 · 전 세계 AI 도입·활용·규제 소식</span><span>요약은 원문을 바탕으로 새로 작성했으며, 기사 원문의 저작권은 각 매체에 있습니다.</span></footer>
 </div>
 {SEARCH_JS}
 </body>
