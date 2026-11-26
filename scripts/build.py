@@ -213,17 +213,33 @@ def build_articles(issues, arts):
             pn = '<div class="pn">' + (f'<a href="{prv["id"]}.html"><small>← 이전 기사</small><span class="t">{E(prv["title"])}</span></a>' if prv else '<span></span>') + \
                  (f'<a class="next" href="{nxt["id"]}.html"><small>다음 기사 →</small><span class="t">{E(nxt["title"])}</span></a>' if nxt else '<span></span>') + '</div>'
             kick = f"Today's Pick {a['pick']} · " if a["pick"] else ""
+            ipicks = [x for x in A if x["pick"]]
+            side_picks = "".join(f'<li><a href="{x["id"]}.html"{" aria-current=page" if x["id"] == a["id"] else ""}><span class="n2">{x["pick"]}</span><span><span class="t">{E(x["title"])}</span><small>{E(x["sec"])}</small></span></a></li>' for x in ipicks)
+            latest = [x for x in arts if x["id"] != a["id"] and not (x["issue"] == a["issue"] and x["pick"])][:6]
+            side_latest = "".join(f'<li><a href="{x["id"]}.html"><span><span class="t">{E(x["title"])}</span><small>{E(x["sec"])} · {md(x["date"])}</small></span></a></li>' for x in latest)
+            chips = "".join(f'<a href="{R}sectors/{sl}.html">{E(n)}</a>' for n, sl in SECTORS)
             out = head(f"{a['title']} · {SITE_NAME}", R) + header(R, L, a["sec"]) + f"""
 <div class="crumb"><a href="{R}index.html">홈</a> › <a href="{R}sectors/{SLUG[a['sec']]}.html">{E(a['sec'])}</a></div>
-<article class="post">
+<header class="post-head">
 <span class="kick">{E(kick)}{E(tagline(a))}</span>
 <h1>{E(a['title'])}</h1>
 <span class="meta">{E(kdate(a['date']))} · <a class="u" href="{R}{a['idate']}.html">제{a['issue']}호 Daily Letter에 수록</a></span>
+</header>
+<div class="post-grid">
+<div>
+<article class="post">
 {body}
 <div class="srcs"><h2>원 출처</h2><ul>{srcs}</ul></div>
 </article>
 {pn}
 <section class="related"><div class="label"><h3>{E(a['sec'])} 관련 소식</h3><a href="{R}sectors/{SLUG[a['sec']]}.html">전체 보기 ›</a></div><ul class="list">{''.join(item_li(x, R) for x in rel) or '<li><span></span><p>아직 다른 소식이 없습니다.</p></li>'}</ul></section>
+</div>
+<aside class="post-side" aria-label="함께 볼 소식">
+<section class="side-box"><h2>제{a['issue']}호 Today's Pick <a href="{R}{a['idate']}.html">전체 ›</a></h2><ol>{side_picks}</ol></section>
+<section class="side-box"><h2>최신 소식</h2><ul>{side_latest}</ul></section>
+<section class="side-box"><h2>분야별 보기</h2><div class="secchips">{chips}</div></section>
+</aside>
+</div>
 """ + footer()
             write(f"articles/{a['id']}.html", out)
 
