@@ -3,8 +3,8 @@
 import json, glob, os, html
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ORDER = ["ICT/모바일", "미디어", "AI/빅데이터", "모빌리티", "로봇", "헬스케어", "소비재", "금융", "제조·에너지", "공공·정책"]
-SLUG = {"ICT/모바일": "ict", "미디어": "media", "AI/빅데이터": "ai-data", "모빌리티": "mobility", "로봇": "robot",
+ORDER = ["ICT/통신", "미디어", "AI/빅데이터", "모빌리티", "로봇", "헬스케어", "소비재", "금융", "제조·에너지", "공공·정책"]
+SLUG = {"ICT/통신": "ict", "미디어": "media", "AI/빅데이터": "ai-data", "모빌리티": "mobility", "로봇": "robot",
         "헬스케어": "health", "소비재": "consumer", "금융": "finance", "제조·에너지": "industry", "공공·정책": "policy"}
 E = lambda s: html.escape(str(s), quote=True)
 
@@ -21,7 +21,7 @@ p1 = d["picks"][0]
 hero = f"""<a class="hero-main" href="{day}#pick-1">
 <span class="kick">Today's Pick 1 · {E(p1['sec'])} · {E(p1['type'])}</span>
 <h2>{E(p1['title'])}</h2>
-<p>{E(first_sentence(p1))}</p>
+<ul class="pts">{"".join(f"<li>{E(t)}</li>" for t in p1['points'])}</ul>
 <p class="why"><b>왜 중요한가</b> {E(p1['why'])}</p>
 <span class="meta">{E(p1['region'])} · {E(p1['date'])} · 출처 {len(p1['sources'])}건</span></a>"""
 side = "".join(f"""<li><a href="{day}#pick-{i}"><span class="num">{i}</span><span><span class="kick">{E(p['sec'])} · {E(p['type'])}</span><strong>{E(p['title'])}</strong><span class="meta">{E(p['region'])} · {E(p['date'])}</span></span></a></li>""" for i, p in enumerate(d["picks"][1:], 2))
@@ -68,7 +68,7 @@ a:focus-visible,input:focus-visible,button:focus-visible{{outline:3px solid var(
 .top{{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--mute);padding:14px 0 0}}
 .mast{{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:14px 0 16px;border-bottom:3px solid var(--ink)}}
 .logo{{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}}
-.logo b{{background:var(--red);color:#fff;font:700 22px/1 "Noto Sans KR",sans-serif;padding:7px 10px;letter-spacing:.02em}}
+.logo b{{border:1.5px dashed var(--mute);color:var(--mute);font:500 13px/1.2 "Noto Sans KR",sans-serif;padding:8px 10px;align-self:center}}
 .logo span{{font:700 clamp(28px,4.4vw,44px)/1 "Noto Serif KR",serif}}
 .search{{position:relative;flex:1 1 300px;max-width:420px}}
 .search input{{width:100%;height:46px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);font:16px "Noto Sans KR",sans-serif;padding:0 46px 0 14px}}
@@ -88,14 +88,17 @@ nav.cats a.hl{{color:var(--red);font-weight:700}}
 .label span{{font-size:14px;color:var(--mute)}}
 .label a{{font-size:14px;color:var(--slate)}}
 .hero{{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:0;border-bottom:1px solid var(--rule)}}
-.hero-main{{display:block;padding:8px 32px 28px 0;border-right:1px solid var(--rule)}}
+.hero-main{{display:flex;flex-direction:column;padding:8px 32px 22px 0;border-right:1px solid var(--rule)}}
+.hero-main .pts{{margin:0 0 14px;padding-left:1.1em;max-width:62ch}}.hero-main .pts li{{margin:4px 0}}
+.hero-main .meta{{margin-top:auto;padding-top:10px}}
 .hero-main h2{{font:700 clamp(26px,3.4vw,40px)/1.22 "Noto Serif KR",serif;margin:10px 0 14px;text-wrap:balance}}
 .hero-main p{{margin:0 0 12px;max-width:62ch;font-size:17px}}
 .hero-main .why{{background:var(--panel);padding:12px 14px;font-size:15px}}
 .hero-main .why b{{color:var(--slate);margin-right:6px}}
 .kick{{display:block;font-size:13px;font-weight:700;color:var(--red)}}
 .meta{{display:block;font-size:13px;color:var(--mute);margin-top:4px}}
-.side{{list-style:none;margin:0;padding:0 0 0 28px}}
+.side{{list-style:none;margin:0;padding:0 0 0 28px;display:flex;flex-direction:column}}
+.side li{{flex:1;display:flex}}.side li>a{{flex:1;align-content:center}}
 .side li{{border-top:1px solid var(--rule)}}
 .side li:first-child{{border-top:0}}
 .side a{{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;padding:14px 0}}
@@ -120,10 +123,10 @@ nav.cats a.hl{{color:var(--red);font-weight:700}}
 .week li:first-child .rank{{color:var(--red)}}
 .week span{{font-weight:500}}
 .week small{{display:block;font-weight:400;color:var(--mute);font-size:13px;margin-top:2px}}
-.monthly{{background:var(--ink);color:var(--bg);padding:22px 22px 24px}}
-.monthly .kick{{color:#ff6b63}}
+.monthly{{background:var(--panel);padding:22px 22px 24px;border-left:4px solid var(--slate)}}
+.monthly .kick{{color:var(--slate)}}
 .monthly h4{{font:700 24px/1.3 "Noto Serif KR",serif;margin:8px 0 8px}}
-.monthly p{{margin:0;font-size:15px;opacity:.85}}
+.monthly p{{margin:0;font-size:15px;color:var(--mute)}}
 .issues{{list-style:none;margin:16px 0 0;padding:0}}
 .issues a{{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-top:1px solid var(--rule);font-size:15px}}
 .issues a span{{color:var(--mute);font-size:13px;flex:none}}
@@ -133,14 +136,14 @@ footer{{margin-top:48px;border-top:3px solid var(--ink);padding:20px 0 44px;font
 </style>
 </head>
 <body>
-<div class="notice">홈 화면 시안입니다 · 분야 메뉴와 분야 카드 제목은 본 제작 때 분야 페이지로 연결됩니다</div>
+<div class="notice">홈 화면 시안입니다 · 로고는 SK텔링크 CI 파일을 받으면 교체 · 분야 링크는 본 제작 때 연결</div>
 <div class="wrap">
 <div class="top"><span>{E(datestr)} · 제{d['issue']}호 발행</span><span>평일 오전 8시(KST) 발행 · 전 세계 AI 도입·활용·규제 소식</span></div>
 <header class="mast">
-<a class="logo" href="./"><b>SKTL</b><span>AI Daily Letter</span></a>
+<a class="logo" href="./"><b>SK텔링크 CI 자리</b><span>SKTL AI Daily Letter</span></a>
 <form class="search" role="search" id="sf"><input id="q" type="search" placeholder="기사 검색 (예: 로보택시, 규제, 금융)" aria-label="기사 검색" autocomplete="off"><button type="submit" aria-label="검색">⌕</button><div class="results" id="res" aria-live="polite"></div></form>
 </header>
-<nav class="cats" aria-label="분야">{nav}<a class="hl" href="#monthly">월간 리뷰</a><a href="#issues">지난 호</a></nav>
+<nav class="cats" aria-label="분야">{nav}<a href="#monthly">월간 리뷰</a></nav>
 
 <div class="label"><h3>Today's Pick</h3><span>수집 범위 {E(d['range'])}</span></div>
 <div class="hero">{hero}<ol class="side">{side}</ol></div>
@@ -153,8 +156,6 @@ footer{{margin-top:48px;border-top:3px solid var(--ink);padding:20px 0 44px;font
 <section>
 <div class="label" id="monthly"><h3>월간 리뷰</h3><span>Insight Report 포함</span></div>
 <div class="monthly"><span class="kick">AI 월간 리뷰 · 2026년 11월호</span><h4>12월 1일(화) 첫 발행 예정</h4><p>한 달간 가장 임팩트 있었던 흐름을 Insight Report로 깊게 다루고, 10개 분야별 월간 리뷰와 규제 동향을 정리합니다.</p></div>
-<div class="label" id="issues"><h3>지난 호</h3><a href="../">전체 보기 ›</a></div>
-<ul class="issues"><li><a href="{day}">제{d['issue']}호 · {E(datestr)}<span>Pick 5 · 분야별 {len(d['others'])}</span></a></li></ul>
 </section>
 </div>
 

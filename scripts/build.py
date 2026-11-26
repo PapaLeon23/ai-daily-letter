@@ -9,7 +9,7 @@ JSON 형식은 data/ 안의 기존 파일을 참고.
 import json, glob, os, html
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ORDER = ["ICT/모바일", "미디어", "AI/빅데이터", "모빌리티", "로봇", "헬스케어", "소비재", "금융", "제조·에너지", "공공·정책"]
+ORDER = ["ICT/통신", "미디어", "AI/빅데이터", "모빌리티", "로봇", "헬스케어", "소비재", "금융", "제조·에너지", "공공·정책"]
 E = lambda s: html.escape(str(s), quote=True)
 
 CSS = """:root{color-scheme:light dark;--bg:light-dark(#ffffff,#10191e);--ink:light-dark(#121212,#e9eef1);--mute:light-dark(#55606a,#9fb0bb);--red:#e3120b;--slate:light-dark(#2e6f8e,#7fb6d2);--panel:light-dark(#e3ecf0,#18262e);--rule:light-dark(#d5dde2,#2a3a44)}
