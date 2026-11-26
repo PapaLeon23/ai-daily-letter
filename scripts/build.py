@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SKTL AI Daily Letter 사이트 빌더.
+"""AI Link (SK텔링크 AI 소식 포털) 사이트 빌더.
 
 python3 scripts/build.py 한 번으로 data/*.json 전체에서 아래를 생성한다.
   index.html                       홈
@@ -12,7 +12,7 @@ python3 scripts/build.py 한 번으로 data/*.json 전체에서 아래를 생성
 import json, glob, os, re, html, datetime, hashlib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SITE_NAME = "SKTL AI Daily Letter"
+SITE_NAME = "AI Link"
 SECTORS = [("ICT/통신", "ict"), ("미디어", "media"), ("AI/빅데이터", "ai-data"), ("모빌리티", "mobility"),
            ("로봇", "robot"), ("헬스케어", "health"), ("소비재", "consumer"), ("금융", "finance"),
            ("제조·에너지", "industry"), ("공공·정책", "policy")]
@@ -96,7 +96,7 @@ def header(R, latest, current=None):
     return f"""
 <div class="top"><span><b id="today">{E(kdate(latest['date']))}</b> <span class="latest">· 최신 <a class="u" href="{R}{latest['date']}.html">제{latest['issue']}호</a> {md(latest['date'])} 발행</span></span></div>
 <header class="mast">
-<a class="logo" href="{R}index.html" aria-label="{SITE_NAME} 홈"><img src="{R}assets/sktelink-logo.png" alt="SK텔링크" width="96" height="46"><span>AI Daily Letter</span></a>
+<a class="logo" href="{R}index.html" aria-label="{SITE_NAME} 홈"><img src="{R}assets/sktelink-logo.png" alt="SK텔링크" width="96" height="46"><span>AI Link</span></a>
 <form class="search" role="search" action="{R}search.html" method="get" data-root="{R}"><input name="q" type="search" placeholder="기사 검색 (예: 로보택시, 규제, 금융)" aria-label="기사 검색" autocomplete="off"><button type="submit">검색</button><div class="drop" aria-live="polite"></div></form>
 </header>
 <nav class="cats" aria-label="분야">{nav}</nav>"""
@@ -180,7 +180,7 @@ def build_home(issues, arts, monthly):
         mf, mt = monthly[0]
         mblock = f"""<a class="monthly" href="monthly/{E(mf)}" style="display:block"><span class="kick s">최신호</span><h4 class="t">{E(mt)}</h4><p>Insight Report와 10개 분야별 월간 리뷰, 규제 동향을 정리했습니다.</p></a>"""
     else:
-        mblock = """<div class="monthly"><span class="kick s">SKTL AI 월간 리뷰 · 2026년 11월호</span><h4>12월 1일(화) 첫 발행 예정</h4><p>한 달간 가장 임팩트 있었던 흐름을 Insight Report로 깊게 다루고, 10개 분야별 월간 리뷰와 규제 동향을 정리합니다.</p></div>"""
+        mblock = """<div class="monthly"><span class="kick s">AI Link 월간 리뷰 · 2026년 11월호</span><h4>12월 1일(화) 첫 발행 예정</h4><p>한 달간 가장 임팩트 있었던 흐름을 Insight Report로 깊게 다루고, 10개 분야별 월간 리뷰와 규제 동향을 정리합니다.</p></div>"""
     nums = number_cards(L, "")
     past = "".join(f'<li><a href="{x["date"]}.html"><span class="t">제{x["issue"]}호 · {E(kdate(x["date"]))}</span><small>{E(x["picks"][0]["title"])} 외 Pick 4건</small></a></li>' for x in reversed(issues[-5:]))
     out = head(SITE_NAME, "") + header("", L) + f"""
