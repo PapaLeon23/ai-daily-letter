@@ -286,21 +286,11 @@ def build_letters(issues, monthly):
             mon = '<li><span class="meta" style="display:block;padding:10px 0">11월호는 12월 1일(화)에 발행됩니다</span></li>'
         out = head(f"제{d['issue']}호 · {SITE_NAME}", "") + header("", L) + f"""
 <div class="page-head"><span class="kick">Daily Letter</span><h1>제{d['issue']}호 · {E(kdate(d['date']))}</h1><p>수집 범위 {E(d['range'])} · Today's Pick 5건 · 분야별 소식 {len(d['others'])}건</p></div>
-<div class="post-grid" style="margin-top:8px">
-<div>
 <div class="label" id="picks"><h2>Today's Pick</h2><span>각 소식을 누르면 요약과 원문 링크가 있는 기사 페이지로 이동</span></div>
-{lead}
+<div class="letter-lead">{lead}</div>
 <div class="pgrid">{rest}</div>
-{number_cards(d, "")}
 <div class="label" id="sectors"><h2>분야별 소식</h2><span>Today's Pick에 실린 소식은 제외</span></div>
-<div class="grid lgrid">{''.join(cards)}</div>
-</div>
-<aside class="post-side" aria-label="이번 호 바로가기">
-<section class="side-box"><h2>분야별 소식 바로가기</h2><ul class="toc">{''.join(toc)}</ul></section>
-<section class="side-box"><h2>Daily Letter 지난 호 <a href="letters.html">전체 ›</a></h2><ul>{past}</ul></section>
-<section class="side-box"><h2>월간 리뷰 <a href="monthly/">전체 ›</a></h2><ul>{mon}</ul></section>
-</aside>
-</div>""" + footer()
+<div class="grid lgrid">{''.join(cards)}</div>""" + footer()
         write(f"{d['date']}.html", out)
 
 
