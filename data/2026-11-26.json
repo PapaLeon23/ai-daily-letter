@@ -1,0 +1,250 @@
+{
+ "issue": 1,
+ "date": "2026-11-26",
+ "weekday": "목",
+ "range": "2026.11.25 ~ 11.26",
+ "notion": "https://app.notion.com/p/4241d8490b578133a26eed4b8bc0d08d",
+ "picks": [
+  {
+   "sec": "금융",
+   "type": "규제·정책",
+   "region": "한국",
+   "date": "11/25",
+   "title": "금융위, 금융권 AI 전환 위해 망분리·데이터 규제 개선…AI 권한·책임 기준도 마련",
+   "points": [
+    "이억원 금융위원장이 11월 25일 '코리아 핀테크 위크 2026' 개막식에서 충분한 안전장치를 전제로 망분리와 데이터 관련 규제를 손보겠다고 밝혔습니다.",
+    "AI가 내부 업무 보조를 넘어 고객 대신 상품을 비교하고 결제까지 실행하는 단계에 들어선 만큼, AI에 맡길 권한과 책임의 기준을 명확히 하겠다는 방침입니다.",
+    "AI 기반 방어체계와 제로트러스트 보안, 보이스피싱 대응 AI 플랫폼(ASAP) 고도화, AI 에이전트를 활용한 자산관리 서비스 확산도 함께 추진합니다."
+   ],
+   "why": "국내 금융사의 생성형·에이전트형 AI 도입을 가로막던 망분리 규제가 본격적으로 풀리는 신호입니다. 'AI가 대신 거래할 때 누가 책임지는가'에 대한 기준이 나오면 금융권 에이전트 서비스 경쟁이 시작될 수 있습니다.",
+   "sources": [
+    {
+     "name": "비즈니스포스트",
+     "url": "https://www.businesspost.co.kr/BP?command=article_view&num=452947"
+    },
+    {
+     "name": "EBN",
+     "url": "https://www.ebn.co.kr/news/articleView.html?idxno=1732953"
+    },
+    {
+     "name": "KPI뉴스",
+     "url": "https://www.kpinews.kr/newsView/1065579800189232"
+    }
+   ]
+  },
+  {
+   "sec": "로봇",
+   "type": "기술·연구",
+   "region": "중국",
+   "date": "11/25",
+   "title": "샤오펑 AI Day: 피지컬 AI 'VLA 3.0' 공개, 휴머노이드 IRON·로보택시 2027년 출시",
+   "points": [
+    "샤오펑이 광저우 AI Day에서 차량·로보택시·휴머노이드·플라잉카가 함께 쓰는 3계층 피지컬 AI 구조 'VLA 3.0'을 공개했습니다.",
+    "휴머노이드 IRON은 2027년 1월 양산을 시작해 1분기 매장 판매보조 훈련을 거쳐 2분기에 정식 출시할 계획입니다. 부회장은 블룸버그 인터뷰에서 가격이 전기차 중간 가격대 수준이 될 수 있다고 말했습니다.",
+    "라이다와 정밀지도 없이 카메라로 주행하는 로보택시 Yoyo-01도 2027년 출시 예정이며, 직접 운영보다 기술·솔루션 공급자 역할을 지향합니다."
+   ],
+   "why": "자동차 회사가 차량과 로봇에 같은 AI 두뇌를 쓰는 '피지컬 AI 기업'으로 전환하는 흐름이 뚜렷해지고 있습니다. 휴머노이드 가격이 자동차 수준으로 제시된 점은 상용화 시점을 가늠할 기준이 됩니다.",
+   "sources": [
+    {
+     "name": "CnEVPost",
+     "url": "https://cnevpost.com/2026/11/25/xpeng-ramps-up-physical-ai-push-2026-ai-day/"
+    },
+    {
+     "name": "Bloomberg",
+     "url": "https://bloomberg.com/news/articles/2026-11-26/xpeng-says-its-humanoid-robot-will-cost-the-same-as-an-ev"
+    },
+    {
+     "name": "Longbridge",
+     "url": "https://longbridge.com/en/news/306743915"
+    }
+   ]
+  },
+  {
+   "sec": "모빌리티",
+   "type": "도입",
+   "region": "미국·한국",
+   "date": "11/25",
+   "title": "현대차그룹 모셔널, 12월 초 라스베이거스서 우버 통해 완전 무인 로보택시 개시",
+   "points": [
+    "모셔널이 12월 초 라스베이거스에서 우버를 통해 안전요원 없는 완전 무인 승차 서비스를 시작할 계획입니다.",
+    "지난 2년간 구조조정을 거치며 대형 주행 모델을 중심으로 한 'AI 우선' 방식으로 자율주행 기술을 다시 만들었습니다.",
+    "아이오닉5 로보택시는 현대차 생산라인에서 자율주행 하드웨어가 통합된 채로 출고되고, 현대차의 운전보조 데이터도 함께 활용합니다."
+   ],
+   "why": "한국 완성차 그룹의 자율주행 자회사가 미국 상용 무인 서비스에 다시 진입하는 사례입니다. 제조 역량과 플랫폼(우버) 제휴를 결합한 모델이 웨이모·테슬라와 어떻게 경쟁할지 지켜볼 만합니다.",
+   "sources": [
+    {
+     "name": "Axios",
+     "url": "https://www.axios.com/2026/11/25/motional-robotaxi-uber-hyundai"
+    },
+    {
+     "name": "Mezha",
+     "url": "https://mezha.net/eng/news/mezha-8495636068779a7a90b54258_motional_prepares_for/"
+    }
+   ]
+  },
+  {
+   "sec": "AI/빅데이터",
+   "type": "인수·투자",
+   "region": "글로벌",
+   "date": "11/25",
+   "title": "JP모건 \"내년 AI 설비투자 1.4조 달러로 2배…2028년부터 정체\"",
+   "points": [
+    "블룸버그 보도에 따르면 JP모건은 내년 AI 관련 설비투자가 약 1.4조 달러로 올해의 두 배 가까이 늘어난 뒤 2028년부터 정체될 것으로 봤습니다.",
+    "이를 위해 투자등급 채권 약 4,500억 달러를 포함해 시장에서 최대 5,500억 달러를 조달할 수 있고, 2027~2031년 약 7조 달러가 투입돼 151GW 규모의 데이터센터 용량이 늘어날 것으로 전망했습니다.",
+    "같은 날 미국 증시 선물은 AI 인프라 투자의 수익성 우려로 반도체·빅테크 중심으로 약세를 보였습니다."
+   ],
+   "why": "AI 투자가 내년 정점을 향해 가속하지만 수익성 검증 시점(2028년 전후)도 함께 거론되고 있습니다. 메모리·데이터센터 공급망에는 호재이지만, 투자 사이클 둔화 가능성도 함께 봐야 합니다.",
+   "sources": [
+    {
+     "name": "헤럴드경제",
+     "url": "https://biz.heraldcorp.com/article/10949847"
+    },
+    {
+     "name": "서울신문",
+     "url": "https://www.seoul.co.kr/news/economy/industry/2026/11/25/20261125004004"
+    },
+    {
+     "name": "뉴스핌",
+     "url": "https://www.newspim.com/news/view/20261125001309"
+    }
+   ]
+  },
+  {
+   "sec": "소비재",
+   "type": "활용",
+   "region": "미국",
+   "date": "11/25",
+   "title": "블프 앞두고 AI 경유 쇼핑 트래픽 127% 급증…블랙프라이데이 95% 증가 전망",
+   "points": [
+    "어도비 애널리틱스 기준 11월 1~22일 미국 온라인 지출은 825억 달러 이상으로 전년 대비 9.1% 늘었습니다.",
+    "AI 도구를 거쳐 소매 사이트로 들어온 방문은 같은 기간 127% 증가했고, 추수감사절 159%, 블랙프라이데이 95%, 사이버먼데이 88% 증가가 예상됩니다.",
+    "세일즈포스는 이번 시즌 이커머스 트래픽의 20%를 AI 챗 에이전트가 만들 것으로 예측했습니다."
+   ],
+   "why": "AI가 쇼핑의 '출발점'이 되면서, 브랜드는 검색 광고뿐 아니라 AI 추천 목록에 오르는 경쟁을 해야 합니다. 국내 유통·소비재 기업도 AI 에이전트가 읽기 쉬운 상품 데이터 정비가 필요해지고 있습니다.",
+   "sources": [
+    {
+     "name": "Digital Commerce 360",
+     "url": "https://www.digitalcommerce360.com/2026/11/25/adobe-online-holiday-spending-data/"
+    },
+    {
+     "name": "Forbes",
+     "url": "https://www.forbes.com/sites/sandycarter/2026/11/17/black-friday-2026-ai-shopping-brand-recommendations/"
+    }
+   ]
+  }
+ ],
+ "others": [
+  {
+   "sec": "ICT/모바일",
+   "date": "11/25",
+   "title": "AI 비서에도 전화번호를…'AI 에이전트 통신사' 등장",
+   "summary": "AI 서버와 전화망을 연결해 AI 비서에 번호를 부여하는 통신 인프라 기업이 국내외에서 나오고 있습니다.",
+   "src_name": "아이티데일리",
+   "src_url": "https://www.itdaily.kr/news/articleView.html?idxno=243198"
+  },
+  {
+   "sec": "미디어",
+   "date": "11/25",
+   "title": "디즈니, 첫 CTO 주도로 전사 AI 통합…어도비 파이어플라이로 자체 IP 모델 학습",
+   "summary": "AI 애니메이션 'Ozzy Fox'는 12월 5일 디즈니+에 공개되며, 내부에서는 표준화 추진을 둘러싼 갈등도 전해집니다.",
+   "src_name": "TheWrap",
+   "src_url": "https://www.thewrap.com/industry-news/business/disney-ceo-josh-dmaro-ai-strategy-cto-karandeep-anand-exclusive/"
+  },
+  {
+   "sec": "미디어",
+   "date": "11/25",
+   "title": "AI 미디어 기업 Every, 1,750만 달러 시리즈A 유치",
+   "summary": "기업의 AI 활용을 다루는 미디어·소프트웨어 기업으로, 기업가치 1.1억 달러를 인정받았습니다.",
+   "src_name": "The Next Web",
+   "src_url": "https://thenextweb.com/news/every-17-5m-series-a-ai-native-media"
+  },
+  {
+   "sec": "AI/빅데이터",
+   "date": "11/26",
+   "title": "법률 AI '슈퍼로이어', 국내 20대 그룹 중 18곳 도입…1년 새 2.5배",
+   "summary": "3분기 말 기준 189개 기업이 도입했고, 업종별로는 금융·제조·소비재·유통 순입니다.",
+   "src_name": "법률신문",
+   "src_url": "https://www.lawtimes.co.kr/news/articleView.html?idxno=230167"
+  },
+  {
+   "sec": "AI/빅데이터",
+   "date": "11/25",
+   "title": "Cognition, 코딩 모델 SWE-2.1 공개…자체 벤치마크 점수 약 2배",
+   "summary": "강화학습만으로 훈련했으며, 자사 측정 기준 이전 모델 대비 점수가 크게 올랐습니다.",
+   "src_name": "Sam on AI",
+   "src_url": "https://samonai.substack.com/p/ai-brief-november-25-2026"
+  },
+  {
+   "sec": "모빌리티",
+   "date": "11/26",
+   "title": "대전시, 자율주행버스 실주행 데이터 대학에 전국 최초 개방",
+   "summary": "ETRI·지역 6개 대학과 협약을 맺고 자율주행버스 주행 데이터와 AI 학습 원천 데이터를 공유합니다.",
+   "src_name": "파이낸셜뉴스",
+   "src_url": "https://www.fnnews.com/news/202611260915440937"
+  },
+  {
+   "sec": "로봇",
+   "date": "11/25",
+   "title": "피규어AI, 테이블 위치 바뀌어도 사과 집는 '피규어 03' 시연 공개",
+   "summary": "휴머노이드 시연이 연출됐다는 머스크의 지적에 반박하는 영상으로, 실제 자율성 검증이 쟁점이 되고 있습니다.",
+   "src_name": "ZDNet Korea",
+   "src_url": "https://zdnet.co.kr/view/?no=20261126153238"
+  },
+  {
+   "sec": "로봇",
+   "date": "11/26",
+   "title": "티로보틱스, CES 2027서 제조용 휴머노이드 'TR-WORKS' 북미 첫 공개",
+   "summary": "제조설비 직접 조작을 시연할 예정이며, 국내 대기업과 공정 적용 기술검증을 진행 중입니다.",
+   "src_name": "뉴스핌",
+   "src_url": "https://www.newspim.com/news/view/20261126000231"
+  },
+  {
+   "sec": "헬스케어",
+   "date": "11/26",
+   "title": "의료 AI 직무교육 6개 병원 성과 공개…보험심사 업무시간 97% 단축",
+   "summary": "병원 직원들이 직접 만든 AI 도구로 진료 통계, 간호 근무표, 신생아 중환자 정보 요약 등을 자동화했습니다.",
+   "src_name": "메디팜헬스",
+   "src_url": "https://www.medipharmhealth.co.kr/news/article.html?no=121715"
+  },
+  {
+   "sec": "금융",
+   "date": "11/25",
+   "title": "KB금융, 담보 사전검토·금융사기 피해구제 심사에 AI 에이전트 적용",
+   "summary": "KB테크포럼에서 은행·손보·카드 계열사의 AI 에이전트 실무 적용 사례를 공유했습니다.",
+   "src_name": "비즈니스코리아",
+   "src_url": "https://www.businesskorea.co.kr/news/articleView.html?idxno=282281"
+  },
+  {
+   "sec": "금융",
+   "date": "11/26",
+   "title": "농협은행, 2028년까지 올원뱅크를 AI 에이전트 플랫폼으로 전환",
+   "summary": "내년 상반기 AI 에이전트 4개를 시범 도입하고 '프롬프트 뱅킹' 시대에 대비합니다.",
+   "src_name": "파이낸셜뉴스",
+   "src_url": "https://www.fnnews.com/news/202611261504447443"
+  },
+  {
+   "sec": "제조·에너지",
+   "date": "11/25",
+   "title": "LG전자 \"제조 혁신의 종착점은 오토노머스 팩토리\"",
+   "summary": "가상공장에서 로봇 동작을 검증해 일주일 안에 현장에 투입하는 것이 목표입니다.",
+   "src_name": "이투데이",
+   "src_url": "https://www.etoday.co.kr/news/view/2652954"
+  },
+  {
+   "sec": "제조·에너지",
+   "date": "11/26",
+   "title": "1.4조 원 '한국형 피지컬 AI 공장' 사업, 내년부터 실제 제조공정 적용",
+   "summary": "전북에는 기업이 직접 기술을 검증하는 실증형 공장 '메타팩토리'를 구축합니다.",
+   "src_name": "ZDNet Korea",
+   "src_url": "https://zdnet.co.kr/view/?no=20261126151854"
+  },
+  {
+   "sec": "공공·정책",
+   "date": "11/25",
+   "title": "뉴욕주, AI 챗봇 탑재 장난감 5년간 판매 금지",
+   "summary": "90일 후 시행되며, 위반 시 하루 최대 1만5천 달러의 벌금이 부과됩니다.",
+   "src_name": "SiliconReport",
+   "src_url": "https://www.siliconreport.com/topic/regulation"
+  }
+ ]
+}

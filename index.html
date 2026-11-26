@@ -7,28 +7,52 @@
 <title>AI Daily Letter</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:light dark;--bg:light-dark(#fff,#10191e);--ink:light-dark(#121212,#e9eef1);--mute:light-dark(#55606a,#9fb0bb);--red:#e3120b;--rule:light-dark(#d5dde2,#2a3a44);--slate:light-dark(#2e6f8e,#7fb6d2)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Noto Sans KR",system-ui,sans-serif}
-.wrap{max-width:760px;margin:0 auto;padding:28px max(5vw,16px) 48px}
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#10191e);--ink:light-dark(#121212,#e9eef1);--mute:light-dark(#55606a,#9fb0bb);--red:#e3120b;--slate:light-dark(#2e6f8e,#7fb6d2);--panel:light-dark(#e3ecf0,#18262e);--rule:light-dark(#d5dde2,#2a3a44)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Noto Sans KR",system-ui,sans-serif;overflow-x:clip}
+html{scroll-padding-top:24px;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+a{color:var(--slate)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 max(5vw,16px)}
+.mast{border-bottom:3px solid var(--ink);padding:28px 0 14px}
 .tab{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:14px;padding:4px 12px}
-h1{font:700 clamp(30px,5vw,44px)/1.1 "Noto Serif KR",serif;margin:12px 0 4px}
-p.sub{color:var(--mute);margin:0 0 24px;border-bottom:3px solid var(--ink);padding-bottom:14px}
-ul{list-style:none;padding:0;margin:0}
-li{border-top:1px solid var(--rule);padding:14px 0}
-li a{color:var(--ink);font-weight:700;text-decoration:none;font-size:17px}
-li a:hover{text-decoration:underline}
-li span{display:block;color:var(--mute);font-size:14px}
+h1{font:700 clamp(30px,5vw,46px)/1.1 "Noto Serif KR",serif;margin:12px 0 6px}
+.meta{color:var(--mute);font-size:14px;display:flex;flex-wrap:wrap;gap:4px 16px}
+.front{padding:28px 0;border-bottom:1px solid var(--rule);max-width:760px}
+h2{font:700 24px/1.2 "Noto Serif KR",serif;margin:0 0 14px}
+.picks{list-style:none;margin:0;padding:0}
+.picks li{border-top:1px solid var(--rule);padding:12px 0;display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px}
+.picks .n{font:700 22px/1 "Noto Serif KR",serif;color:var(--red)}
+.picks a{color:var(--ink);text-decoration:none;font-weight:700;font-size:17px;line-height:1.45}
+.picks a:hover,.picks a:focus-visible{text-decoration:underline}
+.tag{display:block;font-size:13px;color:var(--slate);margin-top:4px}
+.story{padding:32px 0;border-bottom:1px solid var(--rule)}
+.kicker{font-size:14px;color:var(--red);font-weight:700}
+.story h3{font:700 clamp(22px,3vw,30px)/1.25 "Noto Serif KR",serif;margin:6px 0 12px}
+.story ul{padding-left:1.2em;margin:0 0 14px;max-width:70ch}
+.story li{margin:4px 0}
+.why{background:var(--panel);padding:14px 16px;max-width:70ch;margin:0 0 14px}
+.why b{color:var(--slate)}
+.src{font-size:14px;color:var(--mute)}
+.src a{overflow-wrap:anywhere}
+.top{font-size:14px}
+.sector{padding:28px 0}
+.sector h4{font-size:16px;margin:22px 0 4px;color:var(--slate)}
+.item{border-top:1px solid var(--rule);padding:10px 0}
+.item strong{display:block;font-size:16px}
+.item p{margin:2px 0 4px;max-width:75ch}
+footer{padding:28px 0 48px;font-size:14px;color:var(--mute)}
+.list li{display:block}
 </style>
 </head>
 <body>
 <div class="wrap">
-<span class="tab">AI Daily Letter</span>
-<h1>발행 목록</h1>
-<p class="sub">매일 평일 오전 8시(KST) 발행 · 전 세계 AI 도입·활용·규제 소식</p>
-<ul>
-<!-- ISSUES -->
-<li><a href="2026-11-26.html">제1호 · 2026년 11월 26일 (목)</a><span>금융위 AI 규제 개선 · 샤오펑 피지컬 AI · 모셔널 무인 로보택시 · JP모건 AI 설비투자 · AI 경유 쇼핑 트래픽</span></li>
-</ul>
+
+<header class="mast"><span class="tab">AI Daily Letter</span><h1>발행 목록</h1>
+<div class="meta"><span>평일 오전 8시(KST) 발행 · 전 세계 AI 도입·활용·규제 소식</span></div></header>
+<section class="front"><ul class="picks list">
+<li><a href="2026-11-26.html">제1호 · 2026년 11월 26일 (목)</a><span class="tag">금융위, 금융권 AI 전환 위해 망분리·데이터 규제 개선 · 샤오펑 AI Day: 피지컬 AI &#x27;VLA 3.0&#x27; 공개, 휴머노이드 IRON·로보택시 2027년 출시 · 현대차그룹 모셔널, 12월 초 라스베이거스서 우버 통해 완전 무인 로보택시 개시 · JP모건 &quot;내년 AI 설비투자 1.4조 달러로 2배 · 블프 앞두고 AI 경유 쇼핑 트래픽 127% 급증</span></li>
+</ul></section>
 </div>
 </body>
 </html>
