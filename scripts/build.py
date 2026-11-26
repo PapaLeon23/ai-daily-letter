@@ -244,7 +244,7 @@ def build_articles(issues, arts):
             write(f"articles/{a['id']}.html", out)
 
 
-def build_letters(issues):
+def build_letters(issues, monthly):
     L = issues[-1]
     for d in issues:
         picks = [a for a in d["arts"] if a["pick"]]
@@ -254,18 +254,35 @@ def build_letters(issues):
 <p class="why"><b>왜 중요한가</b>{E(a['why'])}</p>
 <p class="meta">출처: {' · '.join(f'<a class="u" href="{E(s["url"])}">{E(s["name"])}</a>' for s in a['sources'])}</p>
 <a class="more" href="articles/{a['id']}.html">기사 페이지로 →</a></article>""" for a in picks)
-        secs = []
+        secs, toc = [], []
         for n, s in SECTORS:
             its = [a for a in d["arts"] if not a["pick"] and a["sec"] == n]
             rows = "".join(item_li(a, "") for a in its)
-            secs.append(f"""<div class="label" style="margin-top:22px"><h3 style="font-size:18px">{E(n)}</h3><a href="sectors/{s}.html">분야 전체 ›</a></div><ul class="list">{rows or '<li><span></span><p>해당 기간 주요 소식 없음 (Today&#39;s Pick 제외)</p></li>'}</ul>""")
+            secs.append(f"""<div class="label" id="sec-{s}" style="margin-top:22px"><h3 style="font-size:18px">{E(n)}</h3><a href="sectors/{s}.html">분야 전체 ›</a></div><ul class="list">{rows or '<li><span></span><p>해당 기간 주요 소식 없음 (Today&#39;s Pick 제외)</p></li>'}</ul>""")
+            toc.append(f'<li><a href="#sec-{s}"><span><span class="t">{E(n)}</span></span><small style="margin:0">{len(its)}건</small></a></li>')
+        toc_picks = "".join(f'<li><a href="#pick-{a["pick"]}"><span class="n2">{a["pick"]}</span><span><span class="t">{E(a["title"])}</span><small>{E(a["sec"])}</small></span></a></li>' for a in picks)
+        past = "".join(f'<li><a href="{x["date"]}.html"{" aria-current=page" if x["date"] == d["date"] else ""}><span><span class="t">제{x["issue"]}호 · {E(kdate(x["date"]))}</span><small>Pick 5 · 분야별 {len(x["others"])}건</small></span></a></li>' for x in list(reversed(issues))[:6])
+        if monthly:
+            mf, mt = monthly[0]
+            mon = f'<li><a href="monthly/{E(mf)}"><span><span class="t">{E(mt)}</span><small>Insight Report 포함</small></span></a></li>'
+        else:
+            mon = '<li><span class="meta" style="display:block;padding:10px 0">11월호는 12월 1일(화)에 발행됩니다</span></li>'
         out = head(f"제{d['issue']}호 · {SITE_NAME}", "") + header("", L) + f"""
-<div class="page-head"><span class="kick">Daily Letter</span><h1>제{d['issue']}호 · {E(kdate(d['date']))}</h1><p>수집 범위 {E(d['range'])}</p></div>
+<div class="page-head"><span class="kick">Daily Letter</span><h1>제{d['issue']}호 · {E(kdate(d['date']))}</h1><p>수집 범위 {E(d['range'])} · Today's Pick 5건 · 분야별 소식 {len(d['others'])}건</p></div>
+<div class="post-grid" style="margin-top:8px">
+<div>
 <div class="label" id="picks"><h2>Today's Pick</h2></div>
-<ol class="side" style="padding-left:0;max-width:820px">{lst}</ol>
+<ol class="side" style="padding-left:0">{lst}</ol>
 {stories}
 <div class="label" id="sectors"><h2>분야별 소식</h2><span>Today's Pick에 실린 소식은 제외</span></div>
-{''.join(secs)}""" + footer()
+{''.join(secs)}
+</div>
+<aside class="post-side" aria-label="이번 호 바로가기">
+<section class="side-box"><h2>분야별 소식 바로가기</h2><ul class="toc">{''.join(toc)}</ul></section>
+<section class="side-box"><h2>Daily Letter 지난 호 <a href="letters.html">전체 ›</a></h2><ul>{past}</ul></section>
+<section class="side-box"><h2>월간 리뷰 <a href="monthly/">전체 ›</a></h2><ul>{mon}</ul></section>
+</aside>
+</div>""" + footer()
         write(f"{d['date']}.html", out)
 
 
@@ -333,7 +350,7 @@ def main():
     build_home(issues, arts, monthly)
     build_sectors(issues, arts)
     build_articles(issues, arts)
-    build_letters(issues)
+    build_letters(issues, monthly)
     build_search(issues, arts)
     build_letter_index(issues)
     print(f"built: {len(issues)} issue(s), {len(arts)} article(s), {len(monthly)} monthly")
