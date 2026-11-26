@@ -147,10 +147,10 @@ def number_cards(d, R, title="숫자로 보는 오늘"):
         a = amap.get(f"{d['date']}-{nb['ref']}")
         if not a:
             continue
-        cards.append(f"""<a class="ncard" href="{R}articles/{a['id']}.html"><span class="kick s">{E(a['sec'])}</span><strong class="nv">{E(nb['value'])}</strong><span class="nl">{E(nb['label'])}</span><span class="ns">{E(nb.get('source', ''))} · <span class="u">관련 기사 →</span></span></a>""")
+        cards.append(f"""<a class="ncard" href="{R}articles/{a['id']}.html"><strong class="nv">{E(nb['value'])}</strong><span class="nl">{E(nb['label'])}</span><span class="ns">{E(nb.get('source', ''))} · <span class="u">관련 기사 →</span></span></a>""")
     if not cards:
         return ""
-    return f"""<div class="label"><h2>{title}</h2><span>제{d['issue']}호 기사에서 뽑은 핵심 수치 · 누르면 해당 기사로 이동</span></div><div class="ngrid">{''.join(cards)}</div>"""
+    return f"""<div class="label"><h2>{title}</h2></div><div class="ngrid">{''.join(cards)}</div>"""
 
 
 def build_home(issues, arts, monthly):
@@ -158,7 +158,7 @@ def build_home(issues, arts, monthly):
     picks = [a for a in L["arts"] if a["pick"]]
     p1 = picks[0]
     hero = f"""<a class="hero-main" href="articles/{p1['id']}.html">
-<span class="kick">Today's Pick 1 · {E(p1['sec'])} · {E(p1['type'])}</span>
+<span class="kick"><span class="num big1">1</span>{E(p1['sec'])} · {E(p1['type'])}</span>
 <h2 class="t">{E(p1['title'])}</h2>
 <ul class="pts">{''.join(f'<li>{E(t)}</li>' for t in p1['points'])}</ul>
 <p class="why"><b>왜 중요한가</b>{E(p1['why'])}</p>
@@ -183,10 +183,10 @@ def build_home(issues, arts, monthly):
 <div class="label"><h2>Today's Pick</h2><span>제{L['issue']}호 · 수집 범위 {E(L['range'])} · <a href="{L['date']}.html">이번 호 전체 보기</a></span></div>
 <div class="hero">{hero}<ol class="side">{side}</ol></div>
 {nums}
-<div class="label"><h2>분야별 소식</h2><span>분야를 누르면 해당 분야 전체 기사로 이동합니다</span></div>
+<div class="label"><h2>분야별 소식</h2></div>
 <div class="grid">{''.join(cards)}</div>
 <div class="lower">
-<section><div class="label"><h3>이번 주 주요 소식</h3><span>이번 주 Today's Pick 모음</span></div><ol class="week">{week}</ol></section>
+<section><div class="label"><h3>이번 주 주요 소식</h3></div><ol class="week">{week}</ol></section>
 <section><div class="label"><h3>월간 리뷰</h3><a href="monthly/">전체 보기 ›</a></div>{mblock}
 <div class="label"><h3>Daily Letter 지난 호</h3><a href="letters.html">전체 보기 ›</a></div><ul class="issues dl">{past}</ul></section>
 </div>""" + footer()
@@ -272,7 +272,7 @@ def build_letters(issues, monthly):
         picks = [a for a in d["arts"] if a["pick"]]
         p1 = picks[0]
         lead = f"""<a class="hero-main" id="pick-1" href="articles/{p1['id']}.html" style="border-right:0;padding-right:0">
-<span class="kick">Today's Pick 1 · {E(tagline(p1))}</span>
+<span class="kick"><span class="num big1">1</span>{E(tagline(p1))}</span>
 <h2 class="t">{E(p1['title'])}</h2>
 <ul class="pts">{''.join(f'<li>{E(t)}</li>' for t in p1['points'])}</ul>
 <p class="why"><b>왜 중요한가</b>{E(p1['why'])}</p>
@@ -292,7 +292,7 @@ def build_letters(issues, monthly):
             mon = '<li><span class="meta" style="display:block;padding:10px 0">11월호는 12월 1일(화)에 발행됩니다</span></li>'
         out = head(f"제{d['issue']}호 · {SITE_NAME}", "") + header("", L) + f"""
 <div class="page-head"><span class="kick">Daily Letter</span><h1>제{d['issue']}호 · {E(kdate(d['date']))}</h1><p>수집 범위 {E(d['range'])} · Today's Pick 5건 · 분야별 소식 {len(d['others'])}건</p></div>
-<div class="label" id="picks"><h2>Today's Pick</h2><span>각 소식을 누르면 요약과 원문 링크가 있는 기사 페이지로 이동</span></div>
+<div class="label" id="picks"><h2>Today's Pick</h2></div>
 <div class="letter-lead">{lead}</div>
 <div class="pgrid">{rest}</div>
 <div class="label" id="sectors"><h2>분야별 소식</h2><span>Today's Pick에 실린 소식은 제외</span></div>
