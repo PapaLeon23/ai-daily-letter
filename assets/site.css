@@ -169,3 +169,8 @@ footer.site{margin-top:48px;border-top:3px solid var(--ink);padding:20px 0 44px;
 .letter-lead .hero-main{padding-bottom:18px;border-bottom:1px solid var(--rule)}
 .letter-lead .hero-main h2{max-width:none;text-wrap:pretty}
 .letter-lead .pts,.letter-lead .why{max-width:none}
+/* article prose */
+.prose{font-size:17px;line-height:1.85;max-width:44em}
+.prose p{margin:0 0 18px}
+.prose .subt{font:700 20px/1.45 "Noto Sans KR",sans-serif;margin:0 0 18px}
+.prose .imp{font:700 18px/1.4 "Noto Sans KR",sans-serif;margin:30px 0 14px;padding-top:22px;border-top:1px solid var(--rule)}

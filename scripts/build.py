@@ -58,12 +58,14 @@ def load():
                                   type=p.get("type", ""), region=p.get("region", ""), title=p["title"],
                                   points=p.get("points", []), why=p.get("why", ""), detail="",
                                   summary=(p.get("points") or [""])[0], sources=p.get("sources", []),
+                                  subtitle=p.get("subtitle", ""), body=p.get("body", []), impl=p.get("implications", []),
                                   date=to_iso(y, p["date"])))
         for j, o in enumerate(d["others"], 1):
             d["arts"].append(dict(id=f"{d['date']}-{j:02d}", issue=d["issue"], idate=d["date"], pick=0, sec=o["sec"],
                                   type=o.get("type", ""), region=o.get("region", ""), title=o["title"], points=[],
                                   why="", detail=o.get("detail", ""), summary=o["summary"],
                                   sources=[{"name": o["src_name"], "url": o["src_url"]}] + o.get("more_sources", []),
+                                  subtitle=o.get("subtitle", ""), body=o.get("body", []), impl=o.get("implications", []),
                                   date=to_iso(y, o["date"])))
         arts += d["arts"]
         issues.append(d)
@@ -217,7 +219,12 @@ def build_articles(issues, arts):
     for d in issues:
         A = d["arts"]
         for k, a in enumerate(A):
-            if a["pick"]:
+            if a["body"]:
+                body = (f'<h2 class="subt">{E(a["subtitle"])}</h2>' if a["subtitle"] else "") + \
+                       "".join(f"<p>{E(t)}</p>" for t in a["body"]) + \
+                       (f'<h2 class="imp">시사점</h2>' + "".join(f"<p>{E(t)}</p>" for t in a["impl"]) if a["impl"] else "")
+                body = f'<div class="prose">{body}</div>'
+            elif a["pick"]:
                 body = f"""<ul class="pts">{''.join(f'<li>{E(t)}</li>' for t in a['points'])}</ul>
 <p class="why"><b>왜 중요한가</b>{E(a['why'])}</p>"""
             else:
@@ -297,7 +304,7 @@ def build_letters(issues, monthly):
 def build_search(issues, arts):
     L = issues[-1]
     idx = [{"id": a["id"], "t": a["title"], "s": a["sec"], "y": a["type"], "d": short(a["date"]),
-            "x": " ".join([a["summary"], a["detail"], a["why"], a["region"]] + a["points"])} for a in arts]
+            "x": " ".join([a["summary"], a["detail"], a["why"], a["region"], a["subtitle"]] + a["points"] + a["body"])} for a in arts]
     write("search-index.json", json.dumps(idx, ensure_ascii=False))
     opts_s = "".join(f'<option>{E(n)}</option>' for n, _ in SECTORS)
     opts_t = "".join(f'<option>{E(t)}</option>' for t in TYPES)
