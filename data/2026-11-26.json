@@ -140,7 +140,10 @@
    "title": "AI 비서에도 전화번호를…'AI 에이전트 통신사' 등장",
    "summary": "AI 서버와 전화망을 연결해 AI 비서에 번호를 부여하는 통신 인프라 기업이 국내외에서 나오고 있습니다.",
    "src_name": "아이티데일리",
-   "src_url": "https://www.itdaily.kr/news/articleView.html?idxno=243198"
+   "src_url": "https://www.itdaily.kr/news/articleView.html?idxno=243198",
+   "type": "활용",
+   "region": "한국·미국",
+   "detail": "전화 상담·예약을 대신하는 AI 비서가 늘면서 AI 서버와 전화망을 연결해 번호를 부여하는 통신 인프라 기업이 등장했습니다. 국내에서는 한국에이아이통신(KAT)이 AI 비서 '피클'에 통화 인프라를 제공하고, 미국에서는 텔레젠트·에이전트폰 등이 API로 번호와 문자 기능을 제공합니다."
   },
   {
    "sec": "미디어",
@@ -148,7 +151,10 @@
    "title": "디즈니, 첫 CTO 주도로 전사 AI 통합…어도비 파이어플라이로 자체 IP 모델 학습",
    "summary": "AI 애니메이션 'Ozzy Fox'는 12월 5일 디즈니+에 공개되며, 내부에서는 표준화 추진을 둘러싼 갈등도 전해집니다.",
    "src_name": "TheWrap",
-   "src_url": "https://www.thewrap.com/industry-news/business/disney-ceo-josh-dmaro-ai-strategy-cto-karandeep-anand-exclusive/"
+   "src_url": "https://www.thewrap.com/industry-news/business/disney-ceo-josh-dmaro-ai-strategy-cto-karandeep-anand-exclusive/",
+   "type": "결합·제휴",
+   "region": "미국",
+   "detail": "캐릭터AI CEO 출신 카란딥 아난드 CTO가 사업부별로 흩어진 AI 워크플로와 시스템 표준화를 맡으면서 내부 갈등도 전해집니다. 디즈니는 어도비 파이어플라이로 자사 IP 기반 맞춤 생성형 모델을 학습하기로 했고, AI로 제작한 애니메이션 'Ozzy Fox'가 12월 5일 디즈니+에 공개될 예정입니다."
   },
   {
    "sec": "미디어",
@@ -156,7 +162,10 @@
    "title": "AI 미디어 기업 Every, 1,750만 달러 시리즈A 유치",
    "summary": "기업의 AI 활용을 다루는 미디어·소프트웨어 기업으로, 기업가치 1.1억 달러를 인정받았습니다.",
    "src_name": "The Next Web",
-   "src_url": "https://thenextweb.com/news/every-17-5m-series-a-ai-native-media"
+   "src_url": "https://thenextweb.com/news/every-17-5m-series-a-ai-native-media",
+   "type": "인수·투자",
+   "region": "미국",
+   "detail": "기업의 AI 업무 활용을 다루는 미디어·소프트웨어 기업 Every가 IA벤처스 주도로 기업가치 1.1억 달러에 투자를 유치했습니다. 유료 구독자는 약 1만 명이며, 글·소프트웨어·팀 교육을 묶은 단일 구독 상품을 계획하고 있습니다."
   },
   {
    "sec": "AI/빅데이터",
@@ -164,7 +173,10 @@
    "title": "법률 AI '슈퍼로이어', 국내 20대 그룹 중 18곳 도입…1년 새 2.5배",
    "summary": "3분기 말 기준 189개 기업이 도입했고, 업종별로는 금융·제조·소비재·유통 순입니다.",
    "src_name": "법률신문",
-   "src_url": "https://www.lawtimes.co.kr/news/articleView.html?idxno=230167"
+   "src_url": "https://www.lawtimes.co.kr/news/articleView.html?idxno=230167",
+   "type": "도입",
+   "region": "한국",
+   "detail": "로앤컴퍼니에 따르면 3분기 말 기준 189개 기업이 법률 AI 슈퍼로이어를 도입했고, 국내 20대 그룹 중 18곳이 이용 중입니다. 업종별로는 금융(49곳), 제조(37곳), 소비재·유통(26곳) 순입니다."
   },
   {
    "sec": "AI/빅데이터",
@@ -172,7 +184,10 @@
    "title": "Cognition, 코딩 모델 SWE-2.1 공개…자체 벤치마크 점수 약 2배",
    "summary": "강화학습만으로 훈련했으며, 자사 측정 기준 이전 모델 대비 점수가 크게 올랐습니다.",
    "src_name": "Sam on AI",
-   "src_url": "https://samonai.substack.com/p/ai-brief-november-25-2026"
+   "src_url": "https://samonai.substack.com/p/ai-brief-november-25-2026",
+   "type": "기술·연구",
+   "region": "미국",
+   "detail": "Cognition이 Kimi K3 기반에 강화학습만으로 훈련한 코딩 모델 SWE-2.1을 공개했습니다. 자사 측정 기준 Terminal-Bench 4.1 점수가 24.2에서 50.0으로 올랐지만, 같은 표에서 최상위 모델보다는 낮았습니다."
   },
   {
    "sec": "모빌리티",
@@ -180,7 +195,10 @@
    "title": "대전시, 자율주행버스 실주행 데이터 대학에 전국 최초 개방",
    "summary": "ETRI·지역 6개 대학과 협약을 맺고 자율주행버스 주행 데이터와 AI 학습 원천 데이터를 공유합니다.",
    "src_name": "파이낸셜뉴스",
-   "src_url": "https://www.fnnews.com/news/202611260915440937"
+   "src_url": "https://www.fnnews.com/news/202611260915440937",
+   "type": "결합·제휴",
+   "region": "한국",
+   "detail": "대전시가 ETRI·지역 6개 대학과 협약을 맺고 올해 1월부터 자율주행버스(A5) 운행으로 확보한 주행 데이터와 AI 학습 데이터 원천 소스를 대학에 개방했습니다. 대학들은 이를 활용해 자율주행·AI 특화 교육과정과 연구를 운영합니다."
   },
   {
    "sec": "로봇",
@@ -188,7 +206,10 @@
    "title": "피규어AI, 테이블 위치 바뀌어도 사과 집는 '피규어 03' 시연 공개",
    "summary": "휴머노이드 시연이 연출됐다는 머스크의 지적에 반박하는 영상으로, 실제 자율성 검증이 쟁점이 되고 있습니다.",
    "src_name": "ZDNet Korea",
-   "src_url": "https://zdnet.co.kr/view/?no=20261126153238"
+   "src_url": "https://zdnet.co.kr/view/?no=20261126153238",
+   "type": "기술·연구",
+   "region": "미국",
+   "detail": "일론 머스크가 기존 휴머노이드 시연은 연출된 경우가 많고 환경이 바뀌면 실패할 것이라고 지적하자, 피규어AI CEO가 테이블 위치가 바뀐 상황에서도 사과를 다시 집는 피규어 03 영상을 공개했습니다. 휴머노이드의 실제 자율성 검증이 업계 쟁점으로 떠오르고 있습니다."
   },
   {
    "sec": "로봇",
@@ -196,7 +217,10 @@
    "title": "티로보틱스, CES 2027서 제조용 휴머노이드 'TR-WORKS' 북미 첫 공개",
    "summary": "제조설비 직접 조작을 시연할 예정이며, 국내 대기업과 공정 적용 기술검증을 진행 중입니다.",
    "src_name": "뉴스핌",
-   "src_url": "https://www.newspim.com/news/view/20261126000231"
+   "src_url": "https://www.newspim.com/news/view/20261126000231",
+   "type": "도입",
+   "region": "한국",
+   "detail": "티로보틱스가 내년 1월 CES 2027에서 실제 제조설비를 직접 조작하는 산업용 휴머노이드 TR-WORKS를 시연할 계획입니다. 현재 국내 주요 대기업과 제조공정 적용을 위한 기술검증(PoC)을 진행하고 있습니다."
   },
   {
    "sec": "헬스케어",
@@ -204,7 +228,10 @@
    "title": "의료 AI 직무교육 6개 병원 성과 공개…보험심사 업무시간 97% 단축",
    "summary": "병원 직원들이 직접 만든 AI 도구로 진료 통계, 간호 근무표, 신생아 중환자 정보 요약 등을 자동화했습니다.",
    "src_name": "메디팜헬스",
-   "src_url": "https://www.medipharmhealth.co.kr/news/article.html?no=121715"
+   "src_url": "https://www.medipharmhealth.co.kr/news/article.html?no=121715",
+   "type": "활용",
+   "region": "한국",
+   "detail": "보건복지부와 한국보건복지인재원의 의료 AI 직무교육 성과교류회에서 6개 의료기관이 현업 직원 주도로 만든 AI 도구를 공유했습니다. 보험심사 업무시간 97%, 진료 운영 통계 작업시간 최대 99.5% 단축 사례와 간호사 근무표 자동화, 신생아 중환자 임상정보 요약 AI 에이전트 등이 소개됐습니다."
   },
   {
    "sec": "금융",
@@ -212,7 +239,10 @@
    "title": "KB금융, 담보 사전검토·금융사기 피해구제 심사에 AI 에이전트 적용",
    "summary": "KB테크포럼에서 은행·손보·카드 계열사의 AI 에이전트 실무 적용 사례를 공유했습니다.",
    "src_name": "비즈니스코리아",
-   "src_url": "https://www.businesskorea.co.kr/news/articleView.html?idxno=282281"
+   "src_url": "https://www.businesskorea.co.kr/news/articleView.html?idxno=282281",
+   "type": "활용",
+   "region": "한국",
+   "detail": "KB금융이 '제8회 KB테크포럼'에서 KB국민은행의 부동산 담보 사전검토·전기통신금융사기 피해구제 심사 AI 에이전트 사례를 발표했습니다. KB손해보험은 AI 기반 침투테스트 도구, KB국민카드는 AI 에이전트 기반 개발 영향도 분석 자동화를 소개했습니다."
   },
   {
    "sec": "금융",
@@ -220,7 +250,10 @@
    "title": "농협은행, 2028년까지 올원뱅크를 AI 에이전트 플랫폼으로 전환",
    "summary": "내년 상반기 AI 에이전트 4개를 시범 도입하고 '프롬프트 뱅킹' 시대에 대비합니다.",
    "src_name": "파이낸셜뉴스",
-   "src_url": "https://www.fnnews.com/news/202611261504447443"
+   "src_url": "https://www.fnnews.com/news/202611261504447443",
+   "type": "도입",
+   "region": "한국",
+   "detail": "농협은행은 내년 상반기까지 은행 내부 지식과 상담 정보를 통합하고 LLM 기반 응답 체계를 구축해 AI 에이전트 4개를 시범 도입한 뒤, 2028년까지 올원뱅크를 에이전트 기반 플랫폼으로 전환할 계획입니다. 현장에서는 금융권 AI 에이전트가 아직 내부 업무 중심이고 소비자용은 개발 단계라는 평가도 나왔습니다."
   },
   {
    "sec": "제조·에너지",
@@ -228,7 +261,10 @@
    "title": "LG전자 \"제조 혁신의 종착점은 오토노머스 팩토리\"",
    "summary": "가상공장에서 로봇 동작을 검증해 일주일 안에 현장에 투입하는 것이 목표입니다.",
    "src_name": "이투데이",
-   "src_url": "https://www.etoday.co.kr/news/view/2652954"
+   "src_url": "https://www.etoday.co.kr/news/view/2652954",
+   "type": "활용",
+   "region": "한국",
+   "detail": "정대화 LG전자 생산기술원장이 K-팹리스 테크포럼에서 피지컬 AI·디지털 트윈·에이전틱 AI를 바탕으로 완전 자율 공장으로 가겠다고 밝혔습니다. 가상공장에서 로봇 동작을 검증해 일주일 안에 현장에 투입하는 것이 목표입니다."
   },
   {
    "sec": "제조·에너지",
@@ -236,7 +272,10 @@
    "title": "1.4조 원 '한국형 피지컬 AI 공장' 사업, 내년부터 실제 제조공정 적용",
    "summary": "전북에는 기업이 직접 기술을 검증하는 실증형 공장 '메타팩토리'를 구축합니다.",
    "src_name": "ZDNet Korea",
-   "src_url": "https://zdnet.co.kr/view/?no=20261126151854"
+   "src_url": "https://zdnet.co.kr/view/?no=20261126151854",
+   "type": "규제·정책",
+   "region": "한국",
+   "detail": "정부가 5년간 전북·경남에서 추진하는 1조 4,131억 원 규모 피지컬 AI R&D가 내년 일부 제조공정 적용 단계에 들어갑니다. 전북에는 기업이 기술을 직접 검증할 수 있는 실증형 공장 '메타팩토리'가 구축됩니다."
   },
   {
    "sec": "공공·정책",
@@ -244,7 +283,10 @@
    "title": "뉴욕주, AI 챗봇 탑재 장난감 5년간 판매 금지",
    "summary": "90일 후 시행되며, 위반 시 하루 최대 1만5천 달러의 벌금이 부과됩니다.",
    "src_name": "SiliconReport",
-   "src_url": "https://www.siliconreport.com/topic/regulation"
+   "src_url": "https://www.siliconreport.com/topic/regulation",
+   "type": "규제·정책",
+   "region": "미국",
+   "detail": "호컬 뉴욕주지사가 AI 챗봇을 탑재한 장난감을 5년간 금지하는 법안에 서명했습니다. 법은 90일 후 시행되며, 위반한 제조·유통사에는 하루 최대 1만5천 달러의 벌금이 부과됩니다."
   }
  ]
 }

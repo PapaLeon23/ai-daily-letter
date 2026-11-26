@@ -1,15 +1,23 @@
-# AI Daily Letter
+# SKTL AI Daily Letter
 
-평일 오전 8시(KST) 발행되는 AI 도입·활용·규제 브리핑의 상세 페이지 사이트입니다.
+평일 오전 8시(KST) 발행되는 전 세계 AI 도입·활용·규제 브리핑 사이트입니다.
 사이트: https://papaleon23.github.io/ai-daily-letter/
 
 ## 구조
-- `data/YYYY-MM-DD.json` — 호별 데이터 (Today's Pick 5건 + 분야별 소식)
-- `YYYY-MM-DD.html` — `scripts/build.py`가 JSON에서 생성하는 호별 상세 페이지
-- `monthly/YYYY-MM.html` — 월간 간행물 (Insight Report 포함)
-- `index.html` — 발행 목록 (build.py가 생성)
+- `data/YYYY-MM-DD.json` — 호별 데이터 (Today's Pick 5건 + 분야별 소식). 형식은 기존 파일 참고.
+  - picks[]: sec, type, region, date(M/D), title, points[3], why, sources[{name,url}]
+  - others[]: sec, type, region, date(M/D), title, summary(1문장), detail(2~3문장), src_name, src_url, (선택) more_sources[{name,url}]
+  - sec 값(정확히): ICT/통신, 미디어, AI/빅데이터, 모빌리티, 로봇, 헬스케어, 소비재, 금융, 제조·에너지, 공공·정책
+  - type 값: 도입, 활용, 결합·제휴, 인수·투자, 규제·정책, 기술·연구
+- `scripts/build.py` — 아래 전부를 생성
+  - `index.html` 홈, `search.html` + `search-index.json` 검색
+  - `sectors/<slug>.html` 분야 페이지 10개
+  - `articles/<YYYY-MM-DD>-p1..p5.html` Today's Pick 기사, `articles/<YYYY-MM-DD>-01..NN.html` 분야별 소식 기사
+  - `YYYY-MM-DD.html` 호별 Daily Letter
+  - `monthly/index.html` 월간 리뷰 목록 (`monthly/YYYY-MM.html`은 월간 작업이 직접 작성, 스타일은 `assets/site.css` 사용)
+- `assets/site.css` 공통 스타일, `assets/sktelink-logo.png` CI
 
-## 발행
-1. `data/`에 새 JSON 추가 (기존 파일 형식 참고)
+## 발행 절차
+1. `data/`에 새 JSON 추가
 2. `python3 scripts/build.py`
 3. commit & push → GitHub Pages 자동 반영

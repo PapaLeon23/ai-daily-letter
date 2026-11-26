@@ -1,0 +1,116 @@
+/* SKTL AI Daily Letter — 공통 스타일
+   VOICE: 조간 경제지처럼 단정하고 빠르게 읽히는 사내 브리핑
+   COLOUR: 흰 바탕, 먹색 #121212, 신문 빨강 #e3120b(번호·Pick 표시에만), 슬레이트 #2e6f8e, 패널 #eef3f6
+   TYPE: Noto Serif KR(제목) + Noto Sans KR(본문) */
+:root{color-scheme:light dark;--bg:light-dark(#fff,#10191e);--ink:light-dark(#121212,#e9eef1);--mute:light-dark(#5b6670,#9fb0bb);--red:#e3120b;--slate:light-dark(#2e6f8e,#7fb6d2);--panel:light-dark(#eef3f6,#18262e);--rule:light-dark(#dbe2e7,#2a3a44)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Noto Sans KR",system-ui,sans-serif;overflow-x:clip}
+html{scroll-padding-top:20px}
+a{color:inherit;text-decoration:none}
+a:hover .t,a.t:hover,.u:hover{text-decoration:underline;text-underline-offset:3px}
+a:focus-visible,input:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 max(4vw,16px)}
+.serif{font-family:"Noto Serif KR",serif}
+/* header */
+.top{display:flex;justify-content:space-between;gap:4px 12px;flex-wrap:wrap;font-size:13px;color:var(--mute);padding:14px 0 0}
+.mast{display:flex;align-items:center;justify-content:space-between;gap:16px 20px;flex-wrap:wrap;padding:14px 0 16px;border-bottom:3px solid var(--ink)}
+.logo{display:flex;align-items:center;gap:14px}
+.logo img{height:46px;width:auto;display:block}
+.logo span{border-left:1.5px solid var(--rule);padding-left:14px;font:700 clamp(26px,4vw,42px)/1 "Noto Serif KR",serif;white-space:nowrap}
+@media (prefers-color-scheme:dark){.logo img{background:#fff;padding:4px 6px;border-radius:4px}}
+.search{position:relative;flex:1 1 300px;max-width:420px;display:flex}
+.search input{flex:1;height:46px;border:1.5px solid var(--ink);border-right:0;background:var(--bg);color:var(--ink);font:16px "Noto Sans KR",sans-serif;padding:0 14px;border-radius:0}
+.search button{width:52px;height:46px;border:0;background:var(--ink);color:var(--bg);font:700 14px "Noto Sans KR",sans-serif;cursor:pointer}
+.drop{position:absolute;z-index:5;left:0;right:0;top:50px;background:var(--bg);border:1.5px solid var(--ink);max-height:60vh;overflow:auto;display:none;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.drop.on{display:block}
+.drop a{display:block;padding:10px 14px;border-top:1px solid var(--rule)}
+.drop a:first-child{border-top:0}
+.drop small{display:block;color:var(--mute);font-size:13px}
+.drop p{margin:0;padding:12px 14px;color:var(--mute);font-size:14px}
+nav.cats{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--rule);scrollbar-width:none}
+nav.cats a{flex:none;padding:12px 14px;font-weight:500;font-size:15px;border-bottom:3px solid transparent}
+nav.cats a:hover,nav.cats a[aria-current]{border-color:var(--ink)}
+nav.cats a[aria-current]{font-weight:700}
+/* section labels */
+.label{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;margin:34px 0 14px;border-bottom:1px solid var(--ink);padding-bottom:8px}
+.label h2,.label h3{margin:0;font:700 22px/1.2 "Noto Serif KR",serif}
+.label span{font-size:14px;color:var(--mute)}
+.label a{font-size:14px;color:var(--slate)}
+.kick{display:block;font-size:13px;font-weight:700;color:var(--red)}
+.kick.s{color:var(--slate)}
+.meta{display:block;font-size:13px;color:var(--mute);margin-top:4px}
+.pick{font-style:normal;font-size:12px;font-weight:700;color:#fff;background:var(--red);padding:1px 5px;margin-right:4px;vertical-align:1px}
+.chip{display:inline-block;font-size:12px;color:var(--slate);border:1px solid var(--slate);padding:0 6px;margin-right:6px;vertical-align:1px}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);border-bottom:1px solid var(--rule)}
+.hero-main{display:flex;flex-direction:column;padding:8px 32px 22px 0;border-right:1px solid var(--rule)}
+.hero-main h2{font:700 clamp(26px,3.4vw,40px)/1.22 "Noto Serif KR",serif;margin:10px 0 14px;text-wrap:balance}
+.pts{margin:0 0 14px;padding-left:1.1em;max-width:64ch}.pts li{margin:4px 0}
+.why{background:var(--panel);padding:12px 14px;font-size:15px;margin:0}
+.why b{color:var(--slate);margin-right:6px}
+.hero-main .meta{margin-top:auto;padding-top:10px}
+.side{list-style:none;margin:0;padding:0 0 0 28px;display:flex;flex-direction:column}
+.side li{flex:1;display:flex;border-top:1px solid var(--rule)}
+.side li:first-child{border-top:0}
+.side li>a{flex:1;display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;padding:14px 0;align-content:center}
+.num{font:700 24px/1 "Noto Serif KR",serif;color:var(--red)}
+.side strong{display:block;font-size:16px;line-height:1.45;margin-top:2px}
+/* sector cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.sec-card{border-top:3px solid var(--ink);padding-top:10px}
+.sec-card header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.sec-card header a{font-weight:700;font-size:17px}
+.sec-card header a::after{content:" ›";color:var(--red)}
+.sec-card header span{font-size:13px;color:var(--mute)}
+.sec-card ul{list-style:none;margin:0;padding:0}
+.sec-card li{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--rule);padding:9px 0;font-size:15px;line-height:1.45}
+.sec-card li>span{flex:none;font-size:13px;color:var(--mute)}
+.sec-card li.empty{color:var(--mute);font-size:14px}
+.lower{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:36px}
+.week{list-style:none;margin:0;padding:0}
+.week a{display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:12px 0;border-top:1px solid var(--rule)}
+.week li:first-child a{border-top:0}
+.rank{font:700 28px/1 "Noto Serif KR",serif;color:var(--slate)}
+.week li:first-child .rank{color:var(--red)}
+.week small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.monthly{background:var(--panel);padding:22px;border-left:4px solid var(--slate)}
+.monthly h4{font:700 24px/1.3 "Noto Serif KR",serif;margin:8px 0}
+.monthly p{margin:0;font-size:15px;color:var(--mute)}
+/* list pages */
+.page-head{padding:30px 0 6px}
+.page-head h1{font:700 clamp(30px,4.4vw,44px)/1.15 "Noto Serif KR",serif;margin:0 0 6px}
+.page-head p{margin:0;color:var(--mute)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px}
+.filters button{height:38px;padding:0 14px;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink);font:500 14px "Noto Sans KR",sans-serif;cursor:pointer}
+.filters button[aria-pressed=true]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.list{list-style:none;margin:0;padding:0}
+.list>li{border-top:1px solid var(--rule);padding:16px 0;display:grid;grid-template-columns:88px minmax(0,1fr);gap:16px}
+.list>li[hidden]{display:none}
+.list .d{font-size:14px;color:var(--mute);padding-top:2px}
+.list h3{margin:2px 0 4px;font-size:18px;line-height:1.45}
+.list p{margin:0;color:var(--mute);font-size:15px;max-width:75ch}
+.empty-msg{color:var(--mute);padding:20px 0}
+/* article */
+.crumb{font-size:14px;color:var(--mute);padding:20px 0 0}
+.crumb a{color:var(--slate)}
+article.post{max-width:760px;padding:10px 0 20px}
+article.post h1{font:700 clamp(28px,4vw,40px)/1.25 "Noto Serif KR",serif;margin:10px 0 12px;text-wrap:balance}
+article.post .meta{font-size:14px;border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:20px}
+article.post .lead{font-size:18px;line-height:1.75;margin:0 0 18px}
+article.post .pts{font-size:17px;line-height:1.75}
+.srcs{margin:22px 0 0;padding:16px 0 0;border-top:1px solid var(--rule)}
+.srcs h2{font-size:15px;margin:0 0 8px}
+.srcs ul{margin:0;padding-left:1.1em}
+.srcs a{color:var(--slate);overflow-wrap:anywhere}
+.related{max-width:760px}
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;margin-top:24px}
+.pn a{border:1px solid var(--rule);padding:12px 14px;font-size:15px}
+.pn a small{display:block;color:var(--mute);font-size:13px}
+.pn a.next{text-align:right}
+/* letter page */
+.story{padding:28px 0;border-bottom:1px solid var(--rule);max-width:820px}
+.story h3{font:700 clamp(22px,3vw,28px)/1.3 "Noto Serif KR",serif;margin:6px 0 12px}
+.story .more{font-size:14px;color:var(--slate)}
+footer.site{margin-top:48px;border-top:3px solid var(--ink);padding:20px 0 44px;font-size:13px;color:var(--mute);display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:space-between}
+@media(max-width:860px){.hero,.lower{grid-template-columns:minmax(0,1fr)}.hero-main{border-right:0;padding-right:0;border-bottom:1px solid var(--rule)}.side{padding-left:0}}
+@media(max-width:600px){.search{max-width:none}.list>li{grid-template-columns:minmax(0,1fr);gap:2px}.pn{grid-template-columns:minmax(0,1fr)}.logo img{height:38px}}

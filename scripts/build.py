@@ -1,151 +1,313 @@
 #!/usr/bin/env python3
-"""AI Daily Letter 정적 사이트 빌더.
+"""SKTL AI Daily Letter 사이트 빌더.
 
-사용법: python3 scripts/build.py
-- data/YYYY-MM-DD.json 을 모두 읽어 같은 이름의 YYYY-MM-DD.html 을 만들고
-- index.html(발행 목록)을 최신 호가 위로 오도록 다시 만든다.
-JSON 형식은 data/ 안의 기존 파일을 참고.
+python3 scripts/build.py 한 번으로 data/*.json 전체에서 아래를 생성한다.
+  index.html                       홈
+  search.html, search-index.json   검색
+  sectors/<slug>.html              분야 페이지 10개
+  articles/<id>.html               기사(소식 1건)별 페이지
+  YYYY-MM-DD.html                  호별 Daily Letter (#pick-1..5 / #sectors 유지)
+  monthly/index.html               월간 리뷰 목록 (monthly/YYYY-MM.html 은 월간 작업이 직접 작성)
 """
-import json, glob, os, html
+import json, glob, os, re, html, datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ORDER = ["ICT/통신", "미디어", "AI/빅데이터", "모빌리티", "로봇", "헬스케어", "소비재", "금융", "제조·에너지", "공공·정책"]
+SITE_NAME = "SKTL AI Daily Letter"
+SECTORS = [("ICT/통신", "ict"), ("미디어", "media"), ("AI/빅데이터", "ai-data"), ("모빌리티", "mobility"),
+           ("로봇", "robot"), ("헬스케어", "health"), ("소비재", "consumer"), ("금융", "finance"),
+           ("제조·에너지", "industry"), ("공공·정책", "policy")]
+SLUG = dict(SECTORS)
+TYPES = ["도입", "활용", "결합·제휴", "인수·투자", "규제·정책", "기술·연구"]
+WD = "월화수목금토일"
 E = lambda s: html.escape(str(s), quote=True)
 
-CSS = """:root{color-scheme:light dark;--bg:light-dark(#ffffff,#10191e);--ink:light-dark(#121212,#e9eef1);--mute:light-dark(#55606a,#9fb0bb);--red:#e3120b;--slate:light-dark(#2e6f8e,#7fb6d2);--panel:light-dark(#e3ecf0,#18262e);--rule:light-dark(#d5dde2,#2a3a44)}
-*{box-sizing:border-box;min-width:0}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Noto Sans KR",system-ui,sans-serif;overflow-x:clip}
-html{scroll-padding-top:24px;scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-a{color:var(--slate)}
-.wrap{max-width:1080px;margin:0 auto;padding:0 max(5vw,16px)}
-.mast{border-bottom:3px solid var(--ink);padding:28px 0 14px}
-.tab{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:14px;padding:4px 12px}
-h1{font:700 clamp(30px,5vw,46px)/1.1 "Noto Serif KR",serif;margin:12px 0 6px}
-.meta{color:var(--mute);font-size:14px;display:flex;flex-wrap:wrap;gap:4px 16px}
-.front{padding:28px 0;border-bottom:1px solid var(--rule);max-width:760px}
-h2{font:700 24px/1.2 "Noto Serif KR",serif;margin:0 0 14px}
-.picks{list-style:none;margin:0;padding:0}
-.picks li{border-top:1px solid var(--rule);padding:12px 0;display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px}
-.picks .n{font:700 22px/1 "Noto Serif KR",serif;color:var(--red)}
-.picks a{color:var(--ink);text-decoration:none;font-weight:700;font-size:17px;line-height:1.45}
-.picks a:hover,.picks a:focus-visible{text-decoration:underline}
-.tag{display:block;font-size:13px;color:var(--slate);margin-top:4px}
-.story{padding:32px 0;border-bottom:1px solid var(--rule)}
-.kicker{font-size:14px;color:var(--red);font-weight:700}
-.story h3{font:700 clamp(22px,3vw,30px)/1.25 "Noto Serif KR",serif;margin:6px 0 12px}
-.story ul{padding-left:1.2em;margin:0 0 14px;max-width:70ch}
-.story li{margin:4px 0}
-.why{background:var(--panel);padding:14px 16px;max-width:70ch;margin:0 0 14px}
-.why b{color:var(--slate)}
-.src{font-size:14px;color:var(--mute)}
-.src a{overflow-wrap:anywhere}
-.top{font-size:14px}
-.sector{padding:28px 0}
-.sector h4{font-size:16px;margin:22px 0 4px;color:var(--slate)}
-.item{border-top:1px solid var(--rule);padding:10px 0}
-.item strong{display:block;font-size:16px}
-.item p{margin:2px 0 4px;max-width:75ch}
-footer{padding:28px 0 48px;font-size:14px;color:var(--mute)}
-.list li{display:block}"""
 
-HEAD = """<!DOCTYPE html>
+def kdate(iso, wd=True):
+    y, m, d = map(int, iso.split("-"))
+    s = f"{y}년 {m}월 {d}일"
+    return s + f" ({WD[datetime.date(y, m, d).weekday()]})" if wd else s
+
+
+def short(iso):
+    return iso.replace("-", ".")
+
+
+def md(iso):
+    return f"{int(iso[5:7])}/{int(iso[8:10])}"
+
+
+def tagline(a):
+    return " · ".join(x for x in [a["sec"], a["type"], a["region"]] if x)
+
+
+# ---------- data ----------
+def to_iso(year, mdstr):
+    m, d = mdstr.split("/")
+    return f"{year}-{int(m):02d}-{int(d):02d}"
+
+
+def load():
+    issues, arts = [], []
+    for f in sorted(glob.glob(os.path.join(ROOT, "data", "*.json"))):
+        d = json.load(open(f, encoding="utf-8"))
+        y = d["date"][:4]
+        d["arts"] = []
+        for i, p in enumerate(d["picks"], 1):
+            d["arts"].append(dict(id=f"{d['date']}-p{i}", issue=d["issue"], idate=d["date"], pick=i, sec=p["sec"],
+                                  type=p.get("type", ""), region=p.get("region", ""), title=p["title"],
+                                  points=p.get("points", []), why=p.get("why", ""), detail="",
+                                  summary=(p.get("points") or [""])[0], sources=p.get("sources", []),
+                                  date=to_iso(y, p["date"])))
+        for j, o in enumerate(d["others"], 1):
+            d["arts"].append(dict(id=f"{d['date']}-{j:02d}", issue=d["issue"], idate=d["date"], pick=0, sec=o["sec"],
+                                  type=o.get("type", ""), region=o.get("region", ""), title=o["title"], points=[],
+                                  why="", detail=o.get("detail", ""), summary=o["summary"],
+                                  sources=[{"name": o["src_name"], "url": o["src_url"]}] + o.get("more_sources", []),
+                                  date=to_iso(y, o["date"])))
+        arts += d["arts"]
+        issues.append(d)
+    issues.sort(key=lambda x: x["date"])
+    arts.sort(key=lambda a: (a["date"], a["idate"], 1 if a["pick"] else 0, -a["pick"]), reverse=True)
+    return issues, arts
+
+
+# ---------- layout ----------
+def head(title, R):
+    return f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>{title}</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-<style>
-""" + CSS + """
-</style>
+<title>{E(title)}</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{R}assets/site.css">
 </head>
 <body>
-<div class="wrap">
+<div class="wrap">"""
+
+
+def header(R, latest, current=None):
+    nav = "".join(f'<a href="{R}sectors/{s}.html"{" aria-current=page" if current == n else ""}>{E(n)}</a>' for n, s in SECTORS)
+    nav += f'<a href="{R}monthly/"{" aria-current=page" if current == "monthly" else ""}>월간 리뷰</a>'
+    return f"""
+<div class="top"><span>{E(kdate(latest['date']))} · 제{latest['issue']}호 발행</span><span>평일 오전 8시(KST) 발행 · 전 세계 AI 도입·활용·규제 소식</span></div>
+<header class="mast">
+<a class="logo" href="{R}index.html" aria-label="{SITE_NAME} 홈"><img src="{R}assets/sktelink-logo.png" alt="SK텔링크" width="96" height="46"><span>AI Daily Letter</span></a>
+<form class="search" role="search" action="{R}search.html" method="get" data-root="{R}"><input name="q" type="search" placeholder="기사 검색 (예: 로보택시, 규제, 금융)" aria-label="기사 검색" autocomplete="off"><button type="submit">검색</button><div class="drop" aria-live="polite"></div></form>
+</header>
+<nav class="cats" aria-label="분야">{nav}</nav>"""
+
+
+SEARCH_JS = """<script>
+{
+const f=document.querySelector('form.search');
+if(f){const R=f.dataset.root,q=f.querySelector('input'),dr=f.querySelector('.drop');let D=null;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const load=()=>D?Promise.resolve(D):fetch(R+'search-index.json').then(r=>r.json()).then(j=>D=j).catch(()=>D=[]);
+const run=()=>{const v=q.value.trim().toLowerCase();if(!v){dr.classList.remove('on');return}
+load().then(d=>{const h=d.filter(x=>(x.t+' '+x.s+' '+x.y+' '+x.x).toLowerCase().includes(v)).slice(0,8);
+dr.innerHTML=h.length?h.map(x=>`<a href="${R}articles/${esc(x.id)}.html">${esc(x.t)}<small>${esc(x.s)}${x.y?' · '+esc(x.y):''} · ${esc(x.d)}</small></a>`).join('')+`<a href="${R}search.html?q=${encodeURIComponent(q.value.trim())}"><small>전체 결과 보기 →</small></a>`:'<p>검색 결과가 없습니다</p>';dr.classList.add('on')})};
+q.addEventListener('input',run);
+document.addEventListener('click',e=>{if(!f.contains(e.target))dr.classList.remove('on')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')dr.classList.remove('on')});}
+}
+</script>"""
+
+
+def footer():
+    return f"""
+<footer class="site"><span>{SITE_NAME} · 팀 내부 공유용 브리핑</span><span>요약은 원문을 바탕으로 새로 작성했으며, 기사 원문의 저작권은 각 매체에 있습니다.</span></footer>
+</div>
+{SEARCH_JS}
+</body>
+</html>
 """
 
 
-def build_issue(d):
-    y, m, dd = d["date"].split("-")
-    out = [HEAD.replace("{title}", f"AI Daily Letter 제{d['issue']}호")]
-    out.append(f"""<header class="mast"><span class="tab">AI Daily Letter</span>
-<h1>AI Daily Letter 제{d['issue']}호</h1>
-<div class="meta"><span>{int(y)}년 {int(m)}월 {int(dd)}일 ({E(d['weekday'])})</span><span>수집 범위: {E(d['range'])}</span></div></header>
-<section class="front" id="picks"><h2>Today's Pick</h2><ol class="picks">""")
-    for i, p in enumerate(d["picks"], 1):
-        out.append(f"""<li><span class="n">{i}</span><div><a href="#pick-{i}">{E(p['title'])}</a><span class="tag">{E(p['sec'])} · {E(p['type'])} · {E(p['region'])}</span></div></li>""")
-    out.append("</ol></section>\n<main>")
-    for i, p in enumerate(d["picks"], 1):
-        pts = "".join(f"<li>{E(t)}</li>" for t in p["points"])
-        srcs = " · ".join(f'<a href="{E(s["url"])}">{E(s["name"])}</a>' for s in p["sources"])
-        out.append(f"""<article class="story" id="pick-{i}">
-<div class="kicker">Today's Pick {i} · {E(p['sec'])} · {E(p['type'])} · {E(p['region'])} · {E(p['date'])}</div>
-<h3>{E(p['title'])}</h3>
-<ul>{pts}</ul>
-<div class="why"><b>왜 중요한가</b> {E(p['why'])}</div>
-<div class="src">출처: {srcs}</div>
-<p class="top"><a href="#picks">↑ Today's Pick 목록으로</a></p>
-</article>""")
-    out.append(f"""</main>
-<section class="sector" id="sectors"><h2>분야별 소식</h2>
-<p class="src">수집 범위: {E(d['range'])} · Today's Pick에 실린 소식은 제외</p>""")
-    for sec in ORDER:
-        its = [o for o in d["others"] if o["sec"] == sec]
-        out.append(f"<h4>{E(sec)}</h4>")
-        if not its:
-            out.append('<div class="item"><p>해당 기간 주요 소식 없음 (Today\'s Pick 제외)</p></div>')
-        for o in its:
-            out.append(f"""<div class="item"><strong>{E(o['title'])}</strong><p>{E(o['summary'])}</p><span class="src">{E(o['date'])} · 출처: <a href="{E(o['src_url'])}">{E(o['src_name'])}</a></span></div>""")
-    notion = d.get("notion")
-    out.append(f"""</section>
-<footer>
-<p><a href="./">← 지난 호 목록</a></p>
-{f'<p>전체 소식은 Notion의 <a href="{E(notion)}">AI Daily Letter 아카이브</a>에서 분야별로 볼 수 있습니다.</p>' if notion else ''}
-<p>요약은 원문을 바탕으로 새로 작성한 것이며, 기사 원문의 저작권은 각 매체에 있습니다. 자세한 내용은 출처 링크에서 확인하세요.</p>
-</footer>
-</div>
-</body>
-</html>
-""")
-    return "\n".join(out)
+def write(rel, text):
+    p = os.path.join(ROOT, rel)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    open(p, "w", encoding="utf-8").write(text)
 
 
-def build_index(issues):
-    import re
-    out = [HEAD.replace("{title}", "AI Daily Letter")]
-    out.append("""<header class="mast"><span class="tab">AI Daily Letter</span><h1>발행 목록</h1>
-<div class="meta"><span>평일 오전 8시(KST) 발행 · 전 세계 AI 도입·활용·규제 소식</span></div></header>
-""")
-    monthly = sorted(glob.glob(os.path.join(ROOT, "monthly", "*.html")), reverse=True)
+def item_li(a, R):
+    pk = '<em class="pick">Pick</em>' if a["pick"] else ""
+    return f"""<li data-type="{E(a['type'])}"><span class="d">{short(a['date'])}</span><div><span class="kick s">{pk}{E(tagline(a))}</span><h3><a class="t" href="{R}articles/{a['id']}.html">{E(a['title'])}</a></h3><p>{E(a['summary'])}</p></div></li>"""
+
+
+# ---------- pages ----------
+def build_home(issues, arts, monthly):
+    L = issues[-1]
+    picks = [a for a in L["arts"] if a["pick"]]
+    p1 = picks[0]
+    hero = f"""<a class="hero-main" href="articles/{p1['id']}.html">
+<span class="kick">Today's Pick 1 · {E(p1['sec'])} · {E(p1['type'])}</span>
+<h2 class="t">{E(p1['title'])}</h2>
+<ul class="pts">{''.join(f'<li>{E(t)}</li>' for t in p1['points'])}</ul>
+<p class="why"><b>왜 중요한가</b>{E(p1['why'])}</p>
+<span class="meta">{E(p1['region'])} · {md(p1['date'])} · 출처 {len(p1['sources'])}건</span></a>"""
+    side = "".join(f"""<li><a href="articles/{a['id']}.html"><span class="num">{a['pick']}</span><span><span class="kick">{E(a['sec'])} · {E(a['type'])}</span><strong class="t">{E(a['title'])}</strong><span class="meta">{E(a['region'])} · {md(a['date'])}</span></span></a></li>""" for a in picks[1:])
+    cards = []
+    for n, s in SECTORS:
+        its = [a for a in arts if a["sec"] == n]
+        rows = "".join(f"""<li><a class="t" href="articles/{a['id']}.html">{'<em class="pick">Pick</em>' if a['pick'] and a['issue'] == L['issue'] else ''}{E(a['title'])}</a><span>{md(a['date'])}</span></li>""" for a in its[:3])
+        cards.append(f"""<section class="sec-card"><header><a href="sectors/{s}.html">{E(n)}</a><span>전체 {len(its)}건</span></header><ul>{rows or '<li class="empty">아직 등록된 소식이 없습니다</li>'}</ul></section>""")
+    y, w, _ = datetime.date.fromisoformat(L["date"]).isocalendar()
+    wk = [a for a in arts if a["pick"] and datetime.date.fromisoformat(a["idate"]).isocalendar()[:2] == (y, w)][:10]
+    week = "".join(f"""<li><a href="articles/{a['id']}.html"><span class="rank">{i}</span><span><span class="t">{E(a['title'])}</span><small>{E(a['sec'])} · {md(a['date'])}</small></span></a></li>""" for i, a in enumerate(wk, 1))
     if monthly:
-        out.append('<section class="front"><h2>월간 간행물</h2><ul class="picks list">')
-        for f in monthly:
-            t = re.search(r"<title>(.*?)</title>", open(f, encoding="utf-8").read(), re.S)
-            name = os.path.basename(f)
-            out.append(f'<li><a href="monthly/{E(name)}">{E(t.group(1).strip() if t else name)}</a></li>')
-        out.append("</ul></section>")
-    out.append("""<section class="front"><h2>Daily Letter</h2><ul class="picks list">""")
+        mf, mt = monthly[0]
+        mblock = f"""<a class="monthly" href="monthly/{E(mf)}" style="display:block"><span class="kick s">최신호</span><h4 class="t">{E(mt)}</h4><p>Insight Report와 10개 분야별 월간 리뷰, 규제 동향을 정리했습니다.</p></a>"""
+    else:
+        mblock = """<div class="monthly"><span class="kick s">SKTL AI 월간 리뷰 · 2026년 11월호</span><h4>12월 1일(화) 첫 발행 예정</h4><p>한 달간 가장 임팩트 있었던 흐름을 Insight Report로 깊게 다루고, 10개 분야별 월간 리뷰와 규제 동향을 정리합니다.</p></div>"""
+    out = head(SITE_NAME, "") + header("", L) + f"""
+<div class="label"><h2>Today's Pick</h2><span>제{L['issue']}호 · 수집 범위 {E(L['range'])} · <a href="{L['date']}.html">이번 호 전체 보기</a></span></div>
+<div class="hero">{hero}<ol class="side">{side}</ol></div>
+<div class="label"><h2>분야별 소식</h2><span>분야를 누르면 해당 분야 전체 기사로 이동합니다</span></div>
+<div class="grid">{''.join(cards)}</div>
+<div class="lower">
+<section><div class="label"><h3>이번 주 주요 소식</h3><span>이번 주 Today's Pick 모음</span></div><ol class="week">{week}</ol></section>
+<section><div class="label"><h3>월간 리뷰</h3><a href="monthly/">전체 보기 ›</a></div>{mblock}</section>
+</div>""" + footer()
+    write("index.html", out)
+
+
+def build_sectors(issues, arts):
+    R = "../"
+    L = issues[-1]
+    for n, s in SECTORS:
+        its = [a for a in arts if a["sec"] == n]
+        types = [t for t in TYPES if any(a["type"] == t for a in its)]
+        btns = '<button type="button" aria-pressed="true" data-f="">전체</button>' + "".join(f'<button type="button" aria-pressed="false" data-f="{E(t)}">{E(t)}</button>' for t in types)
+        out = head(f"{n} · {SITE_NAME}", R) + header(R, L, n) + f"""
+<div class="page-head"><h1>{E(n)}</h1><p>{E(n)} 분야의 AI 도입·활용·규제 소식 · 전체 {len(its)}건 · 최신순</p></div>
+<div class="filters" role="group" aria-label="유형 필터">{btns if its else ''}</div>
+<ul class="list" id="lst">{''.join(item_li(a, R) for a in its)}</ul>
+{'' if its else '<p class="empty-msg">아직 등록된 소식이 없습니다.</p>'}
+<script>
+{{const b=document.querySelectorAll('.filters button'),li=document.querySelectorAll('#lst>li');
+b.forEach(x=>x.addEventListener('click',()=>{{b.forEach(y=>y.setAttribute('aria-pressed',y===x));const f=x.dataset.f;li.forEach(l=>l.hidden=!!f&&l.dataset.type!==f)}}))}}
+</script>""" + footer()
+        write(f"sectors/{s}.html", out)
+
+
+def build_articles(issues, arts):
+    R = "../"
+    L = issues[-1]
     for d in issues:
-        y, m, dd = d["date"].split("-")
-        heads = " · ".join(p["title"].split("…")[0] for p in d["picks"])
-        out.append(f"""<li><a href="{d['date']}.html">제{d['issue']}호 · {int(y)}년 {int(m)}월 {int(dd)}일 ({E(d['weekday'])})</a><span class="tag">{E(heads)}</span></li>""")
-    out.append("</ul></section>\n</div>\n</body>\n</html>\n")
-    return "\n".join(out)
+        A = d["arts"]
+        for k, a in enumerate(A):
+            if a["pick"]:
+                body = f"""<ul class="pts">{''.join(f'<li>{E(t)}</li>' for t in a['points'])}</ul>
+<p class="why"><b>왜 중요한가</b>{E(a['why'])}</p>"""
+            else:
+                body = f"""<p class="lead">{E(a['detail'] or a['summary'])}</p>"""
+            srcs = "".join(f'<li><a href="{E(s["url"])}">{E(s["name"])}</a></li>' for s in a["sources"])
+            rel = [x for x in arts if x["sec"] == a["sec"] and x["id"] != a["id"]][:4]
+            prv = A[k - 1] if k > 0 else None
+            nxt = A[k + 1] if k + 1 < len(A) else None
+            pn = '<div class="pn">' + (f'<a href="{prv["id"]}.html"><small>← 이전 기사</small><span class="t">{E(prv["title"])}</span></a>' if prv else '<span></span>') + \
+                 (f'<a class="next" href="{nxt["id"]}.html"><small>다음 기사 →</small><span class="t">{E(nxt["title"])}</span></a>' if nxt else '<span></span>') + '</div>'
+            kick = f"Today's Pick {a['pick']} · " if a["pick"] else ""
+            out = head(f"{a['title']} · {SITE_NAME}", R) + header(R, L, a["sec"]) + f"""
+<div class="crumb"><a href="{R}index.html">홈</a> › <a href="{R}sectors/{SLUG[a['sec']]}.html">{E(a['sec'])}</a></div>
+<article class="post">
+<span class="kick">{E(kick)}{E(tagline(a))}</span>
+<h1>{E(a['title'])}</h1>
+<span class="meta">{E(kdate(a['date']))} · <a class="u" href="{R}{a['idate']}.html">제{a['issue']}호 Daily Letter에 수록</a></span>
+{body}
+<div class="srcs"><h2>원 출처</h2><ul>{srcs}</ul></div>
+</article>
+{pn}
+<section class="related"><div class="label"><h3>{E(a['sec'])} 관련 소식</h3><a href="{R}sectors/{SLUG[a['sec']]}.html">전체 보기 ›</a></div><ul class="list">{''.join(item_li(x, R) for x in rel) or '<li><span></span><p>아직 다른 소식이 없습니다.</p></li>'}</ul></section>
+""" + footer()
+            write(f"articles/{a['id']}.html", out)
+
+
+def build_letters(issues):
+    L = issues[-1]
+    for d in issues:
+        picks = [a for a in d["arts"] if a["pick"]]
+        lst = "".join(f"""<li><a href="#pick-{a['pick']}"><span class="num">{a['pick']}</span><span><span class="kick">{E(a['sec'])} · {E(a['type'])}</span><strong class="t">{E(a['title'])}</strong></span></a></li>""" for a in picks)
+        stories = "".join(f"""<article class="story" id="pick-{a['pick']}"><span class="kick">Today's Pick {a['pick']} · {E(tagline(a))} · {md(a['date'])}</span>
+<h3>{E(a['title'])}</h3><ul class="pts">{''.join(f'<li>{E(t)}</li>' for t in a['points'])}</ul>
+<p class="why"><b>왜 중요한가</b>{E(a['why'])}</p>
+<p class="meta">출처: {' · '.join(f'<a class="u" href="{E(s["url"])}">{E(s["name"])}</a>' for s in a['sources'])}</p>
+<a class="more" href="articles/{a['id']}.html">기사 페이지로 →</a></article>""" for a in picks)
+        secs = []
+        for n, s in SECTORS:
+            its = [a for a in d["arts"] if not a["pick"] and a["sec"] == n]
+            rows = "".join(item_li(a, "") for a in its)
+            secs.append(f"""<div class="label" style="margin-top:22px"><h3 style="font-size:18px">{E(n)}</h3><a href="sectors/{s}.html">분야 전체 ›</a></div><ul class="list">{rows or '<li><span></span><p>해당 기간 주요 소식 없음 (Today&#39;s Pick 제외)</p></li>'}</ul>""")
+        out = head(f"제{d['issue']}호 · {SITE_NAME}", "") + header("", L) + f"""
+<div class="page-head"><span class="kick">Daily Letter</span><h1>제{d['issue']}호 · {E(kdate(d['date']))}</h1><p>수집 범위 {E(d['range'])}</p></div>
+<div class="label" id="picks"><h2>Today's Pick</h2></div>
+<ol class="side" style="padding-left:0;max-width:820px">{lst}</ol>
+{stories}
+<div class="label" id="sectors"><h2>분야별 소식</h2><span>Today's Pick에 실린 소식은 제외</span></div>
+{''.join(secs)}""" + footer()
+        write(f"{d['date']}.html", out)
+
+
+def build_search(issues, arts):
+    L = issues[-1]
+    idx = [{"id": a["id"], "t": a["title"], "s": a["sec"], "y": a["type"], "d": short(a["date"]),
+            "x": " ".join([a["summary"], a["detail"], a["why"], a["region"]] + a["points"])} for a in arts]
+    write("search-index.json", json.dumps(idx, ensure_ascii=False))
+    opts_s = "".join(f'<option>{E(n)}</option>' for n, _ in SECTORS)
+    opts_t = "".join(f'<option>{E(t)}</option>' for t in TYPES)
+    fld = "height:44px;border:1.5px solid var(--ink);padding:0 12px;font:16px 'Noto Sans KR',sans-serif;background:var(--bg);color:var(--ink)"
+    out = head(f"검색 · {SITE_NAME}", "") + header("", L) + f"""
+<div class="page-head"><h1>기사 검색</h1><p>제목·요약·분야·유형에서 찾습니다</p></div>
+<form class="filters" role="search" onsubmit="return false">
+<input id="sq" type="search" placeholder="검색어" aria-label="검색어" style="{fld};flex:1 1 260px">
+<select id="ss" aria-label="분야" style="{fld}"><option value="">전체 분야</option>{opts_s}</select>
+<select id="st" aria-label="유형" style="{fld}"><option value="">전체 유형</option>{opts_t}</select>
+</form>
+<p class="meta" id="cnt"></p>
+<ul class="list" id="out"></ul>
+<script>
+{{
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c]));
+const q=document.getElementById('sq'),ss=document.getElementById('ss'),st=document.getElementById('st'),out=document.getElementById('out'),cnt=document.getElementById('cnt');
+let D=[];
+q.value=new URLSearchParams(location.search).get('q')||'';
+const run=()=>{{const v=q.value.trim().toLowerCase();const h=D.filter(x=>(!v||(x.t+' '+x.s+' '+x.y+' '+x.x).toLowerCase().includes(v))&&(!ss.value||x.s===ss.value)&&(!st.value||x.y===st.value));
+cnt.textContent=h.length+'건';
+out.innerHTML=h.map(x=>`<li><span class="d">${{esc(x.d)}}</span><div><span class="kick s">${{esc(x.s)}}${{x.y?' · '+esc(x.y):''}}</span><h3><a class="t" href="articles/${{esc(x.id)}}.html">${{esc(x.t)}}</a></h3></div></li>`).join('')||'<li><span></span><p class="empty-msg">검색 결과가 없습니다</p></li>'}};
+fetch('search-index.json').then(r=>r.json()).then(j=>{{D=j;run()}}).catch(()=>{{cnt.textContent='검색 데이터를 불러오지 못했습니다'}});
+[q,ss,st].forEach(e=>e.addEventListener('input',run));
+}}
+</script>""" + footer()
+    write("search.html", out)
+
+
+def build_monthly_index(issues):
+    L = issues[-1]
+    files = sorted([f for f in glob.glob(os.path.join(ROOT, "monthly", "*.html")) if os.path.basename(f) != "index.html"], reverse=True)
+    monthly = []
+    for f in files:
+        t = re.search(r"<title>(.*?)</title>", open(f, encoding="utf-8").read(), re.S)
+        monthly.append((os.path.basename(f), t.group(1).strip() if t else os.path.basename(f)))
+    rows = "".join(f'<li><span class="d">{E(n[:7].replace("-", "."))}</span><div><h3><a class="t" href="{E(n)}">{E(t)}</a></h3><p>Insight Report 포함</p></div></li>' for n, t in monthly)
+    out = head(f"월간 리뷰 · {SITE_NAME}", "../") + header("../", L, "monthly") + f"""
+<div class="page-head"><h1>월간 리뷰</h1><p>매월 첫 영업일 발행 · 한 달의 핵심 흐름과 Insight Report</p></div>
+<ul class="list">{rows}</ul>
+{'' if monthly else '<p class="empty-msg">첫 호(2026년 11월호)는 12월 1일(화)에 발행됩니다.</p>'}""" + footer()
+    write("monthly/index.html", out)
+    return monthly
 
 
 def main():
-    issues = []
-    for f in sorted(glob.glob(os.path.join(ROOT, "data", "*.json"))):
-        with open(f, encoding="utf-8") as fh:
-            d = json.load(fh)
-        with open(os.path.join(ROOT, d["date"] + ".html"), "w", encoding="utf-8") as fh:
-            fh.write(build_issue(d))
-        issues.append(d)
-    issues.sort(key=lambda x: x["date"], reverse=True)
-    with open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8") as fh:
-        fh.write(build_index(issues))
-    print(f"built {len(issues)} issue(s)")
+    issues, arts = load()
+    monthly = build_monthly_index(issues)
+    build_home(issues, arts, monthly)
+    build_sectors(issues, arts)
+    build_articles(issues, arts)
+    build_letters(issues)
+    build_search(issues, arts)
+    print(f"built: {len(issues)} issue(s), {len(arts)} article(s), {len(monthly)} monthly")
 
 
 if __name__ == "__main__":
