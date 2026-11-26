@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AI Daily Letter 제1호</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: 조간 경제지 1면처럼 단정하고 빠르게 읽히는 브리핑
+   IDEA: 접어 든 조간 신문 — 1면 헤드라인 5개, 안쪽 면에 기사 상세
+   PICTURE: 오늘 수집된 소식의 분야 분포 막대(1면 우측 박스)
+   COLOUR and TYPE: 흰 바탕, 먹색 #121212, 신문 빨강 #e3120b, 슬레이트 #2e6f8e, 패널 #e3ecf0 / Noto Serif KR + Noto Sans KR
+   LAYOUT: 상단 빨간 탭, 1면(헤드라인+분포), 픽 상세 5개, 분야별 소식, 하단 출처 안내 */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#10191e);--ink:light-dark(#121212,#e9eef1);--mute:light-dark(#55606a,#9fb0bb);--red:#e3120b;--slate:light-dark(#2e6f8e,#7fb6d2);--panel:light-dark(#e3ecf0,#18262e);--rule:light-dark(#d5dde2,#2a3a44)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Noto Sans KR",system-ui,sans-serif;overflow-x:clip}
+html{scroll-padding-top:24px;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+a{color:var(--slate)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 max(5vw,16px)}
+.mast{border-bottom:3px solid var(--ink);padding:28px 0 14px}
+.tab{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:14px;padding:4px 12px}
+.mast h1{font:700 clamp(32px,5vw,48px)/1.05 "Noto Serif KR",serif;margin:12px 0 6px;text-wrap:balance}
+.meta{color:var(--mute);font-size:14px;display:flex;flex-wrap:wrap;gap:4px 16px}
+.front{padding:28px 0;border-bottom:1px solid var(--rule);max-width:760px}
+@media(max-width:760px){.front{grid-template-columns:minmax(0,1fr)}}
+h2{font:700 24px/1.2 "Noto Serif KR",serif;margin:0 0 14px}
+.picks{list-style:none;margin:0;padding:0;counter-reset:p}
+.picks li{border-top:1px solid var(--rule);padding:12px 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}
+.picks li::before{counter-increment:p;content:counter(p);font:700 22px/1 "Noto Serif KR",serif;color:var(--red);width:22px}
+.picks a{color:var(--ink);text-decoration:none;font-weight:700;font-size:17px;line-height:1.45}
+.picks a:hover,.picks a:focus-visible{text-decoration:underline;outline:none}
+.tag{display:inline-block;font-size:13px;color:var(--slate);margin-top:4px}
+.dist{background:var(--panel);padding:20px}
+.dist h3{margin:0 0 4px;font-size:16px}
+.dist p{margin:0 0 14px;font-size:14px;color:var(--mute)}
+.bar{display:grid;grid-template-columns:6.5em minmax(0,1fr) 1.5em;gap:8px;align-items:center;font-size:14px;margin:7px 0}
+.bar i{display:block;height:12px;background:var(--slate)}
+.bar i.hot{background:var(--red)}
+.bar b{text-align:right;font-weight:500}
+.story{padding:32px 0;border-bottom:1px solid var(--rule)}
+.kicker{font-size:14px;color:var(--red);font-weight:700}
+.story h3{font:700 clamp(22px,3vw,30px)/1.25 "Noto Serif KR",serif;margin:6px 0 12px;text-wrap:balance}
+.story ul{padding-left:1.2em;margin:0 0 14px;max-width:70ch}
+.story li{margin:4px 0}
+.why{background:var(--panel);padding:14px 16px;max-width:70ch;margin:0 0 14px}
+.why b{color:var(--slate)}
+.src{font-size:14px;color:var(--mute)}
+.src a{overflow-wrap:anywhere}
+.top{font-size:14px}
+.sector{padding:28px 0}
+.sector h4{font-size:16px;margin:22px 0 4px;color:var(--slate)}
+.item{border-top:1px solid var(--rule);padding:10px 0}
+.item strong{display:block;font-size:16px}
+.item p{margin:2px 0 4px;max-width:75ch}
+footer{padding:28px 0 48px;font-size:14px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mast">
+  <span class="tab">AI Daily Letter</span>
+  <h1>AI Daily Letter 제1호</h1>
+  <div class="meta"><span>제1호 (시험판)</span><span>2026년 11월 26일 (목)</span><span>수집 범위: 2026.11.25 ~ 11.26 (발행일 -1일)</span></div>
+</header>
+
+<section class="front">
+  <div>
+    <h2>Today's Pick</h2>
+    <ol class="picks" id="picks"></ol>
+  </div>
+</section>
+
+<main id="stories"></main>
+
+<section class="sector" id="sectors">
+  <h2>분야별 소식</h2>
+  <p class="src">수집 범위: 2026.11.25 ~ 11.26 · Today's Pick에 실린 소식은 제외</p>
+  <div id="others"></div>
+</section>
+
+<footer>
+  <p><a href="./">← 지난 호 목록</a></p>
+  <p>전체 소식은 Notion의 <a href="https://app.notion.com/p/4241d8490b578133a26eed4b8bc0d08d">AI Daily Letter 아카이브</a>에서 분야별로 볼 수 있습니다.</p>
+  <p>요약은 원문을 바탕으로 새로 작성한 것이며, 기사 원문의 저작권은 각 매체에 있습니다. 자세한 내용은 출처 링크에서 확인하세요.</p>
+</footer>
+</div>
+
+<script>
+{
+const picks=[
+{id:"pick-1",sec:"금융",type:"규제·정책",region:"한국",date:"11/25",
+ title:"금융위, 금융권 AI 전환 위해 망분리·데이터 규제 개선…AI 권한·책임 기준도 마련",
+ pts:["이억원 금융위원장이 11월 25일 '코리아 핀테크 위크 2026' 개막식에서 충분한 안전장치를 전제로 망분리와 데이터 관련 규제를 손보겠다고 밝혔습니다.",
+ "AI가 내부 업무 보조를 넘어 고객 대신 상품을 비교하고 결제까지 실행하는 단계에 들어선 만큼, AI에 맡길 권한과 책임의 기준을 명확히 하겠다는 방침입니다.",
+ "AI 기반 방어체계와 제로트러스트 보안, 보이스피싱 대응 AI 플랫폼(ASAP) 고도화, AI 에이전트를 활용한 자산관리 서비스 확산도 함께 추진합니다."],
+ why:"국내 금융사의 생성형·에이전트형 AI 도입을 가로막던 망분리 규제가 본격적으로 풀리는 신호입니다. 'AI가 대신 거래할 때 누가 책임지는가'에 대한 기준이 나오면 금융권 에이전트 서비스 경쟁이 시작될 수 있습니다.",
+ src:[["비즈니스포스트","https://www.businesspost.co.kr/BP?command=article_view&num=452947"],["EBN","https://www.ebn.co.kr/news/articleView.html?idxno=1732953"],["KPI뉴스","https://www.kpinews.kr/newsView/1065579800189232"]]},
+{id:"pick-2",sec:"로봇",type:"기술·연구",region:"중국",date:"11/25",
+ title:"샤오펑 AI Day: 피지컬 AI 'VLA 3.0' 공개, 휴머노이드 IRON·로보택시 2027년 출시",
+ pts:["샤오펑이 광저우 AI Day에서 차량·로보택시·휴머노이드·플라잉카가 함께 쓰는 3계층 피지컬 AI 구조 'VLA 3.0'을 공개했습니다.",
+ "휴머노이드 IRON은 2027년 1월 양산을 시작해 1분기 매장 판매보조 훈련을 거쳐 2분기에 정식 출시할 계획입니다. 부회장은 블룸버그 인터뷰에서 가격이 전기차 중간 가격대 수준이 될 수 있다고 말했습니다.",
+ "라이다와 정밀지도 없이 카메라로 주행하는 로보택시 Yoyo-01도 2027년 출시 예정이며, 직접 운영보다 기술·솔루션 공급자 역할을 지향합니다."],
+ why:"자동차 회사가 차량과 로봇에 같은 AI 두뇌를 쓰는 '피지컬 AI 기업'으로 전환하는 흐름이 뚜렷해지고 있습니다. 휴머노이드 가격이 자동차 수준으로 제시된 점은 상용화 시점을 가늠할 기준이 됩니다.",
+ src:[["CnEVPost","https://cnevpost.com/2026/11/25/xpeng-ramps-up-physical-ai-push-2026-ai-day/"],["Bloomberg","https://bloomberg.com/news/articles/2026-11-26/xpeng-says-its-humanoid-robot-will-cost-the-same-as-an-ev"],["Longbridge","https://longbridge.com/en/news/306743915"]]},
+{id:"pick-3",sec:"모빌리티",type:"도입",region:"미국·한국",date:"11/25",
+ title:"현대차그룹 모셔널, 12월 초 라스베이거스서 우버 통해 완전 무인 로보택시 개시",
+ pts:["모셔널이 12월 초 라스베이거스에서 우버를 통해 안전요원 없는 완전 무인 승차 서비스를 시작할 계획입니다.",
+ "지난 2년간 구조조정을 거치며 대형 주행 모델을 중심으로 한 'AI 우선' 방식으로 자율주행 기술을 다시 만들었습니다.",
+ "아이오닉5 로보택시는 현대차 생산라인에서 자율주행 하드웨어가 통합된 채로 출고되고, 현대차의 운전보조 데이터도 함께 활용합니다."],
+ why:"한국 완성차 그룹의 자율주행 자회사가 미국 상용 무인 서비스에 다시 진입하는 사례입니다. 제조 역량과 플랫폼(우버) 제휴를 결합한 모델이 웨이모·테슬라와 어떻게 경쟁할지 지켜볼 만합니다.",
+ src:[["Axios","https://www.axios.com/2026/11/25/motional-robotaxi-uber-hyundai"],["Mezha","https://mezha.net/eng/news/mezha-8495636068779a7a90b54258_motional_prepares_for/"]]},
+{id:"pick-4",sec:"AI/빅데이터",type:"인수·투자",region:"글로벌",date:"11/25",
+ title:"JP모건 \"내년 AI 설비투자 1.4조 달러로 2배…2028년부터 정체\"",
+ pts:["블룸버그 보도에 따르면 JP모건은 내년 AI 관련 설비투자가 약 1.4조 달러로 올해의 두 배 가까이 늘어난 뒤 2028년부터 정체될 것으로 봤습니다.",
+ "이를 위해 투자등급 채권 약 4,500억 달러를 포함해 시장에서 최대 5,500억 달러를 조달할 수 있고, 2027~2031년 약 7조 달러가 투입돼 151GW 규모의 데이터센터 용량이 늘어날 것으로 전망했습니다.",
+ "같은 날 미국 증시 선물은 AI 인프라 투자의 수익성 우려로 반도체·빅테크 중심으로 약세를 보였습니다."],
+ why:"AI 투자가 내년 정점을 향해 가속하지만 수익성 검증 시점(2028년 전후)도 함께 거론되고 있습니다. 메모리·데이터센터 공급망에는 호재이지만, 투자 사이클 둔화 가능성도 함께 봐야 합니다.",
+ src:[["헤럴드경제","https://biz.heraldcorp.com/article/10949847"],["서울신문","https://www.seoul.co.kr/news/economy/industry/2026/11/25/20261125004004"],["뉴스핌","https://www.newspim.com/news/view/20261125001309"]]},
+{id:"pick-5",sec:"소비재",type:"활용",region:"미국",date:"11/25",
+ title:"블프 앞두고 AI 경유 쇼핑 트래픽 127% 급증…블랙프라이데이 95% 증가 전망",
+ pts:["어도비 애널리틱스 기준 11월 1~22일 미국 온라인 지출은 825억 달러 이상으로 전년 대비 9.1% 늘었습니다.",
+ "AI 도구를 거쳐 소매 사이트로 들어온 방문은 같은 기간 127% 증가했고, 추수감사절 159%, 블랙프라이데이 95%, 사이버먼데이 88% 증가가 예상됩니다.",
+ "세일즈포스는 이번 시즌 이커머스 트래픽의 20%를 AI 챗 에이전트가 만들 것으로 예측했습니다."],
+ why:"AI가 쇼핑의 '출발점'이 되면서, 브랜드는 검색 광고뿐 아니라 AI 추천 목록에 오르는 경쟁을 해야 합니다. 국내 유통·소비재 기업도 AI 에이전트가 읽기 쉬운 상품 데이터 정비가 필요해지고 있습니다.",
+ src:[["Digital Commerce 360","https://www.digitalcommerce360.com/2026/11/25/adobe-online-holiday-spending-data/"],["Forbes","https://www.forbes.com/sites/sandycarter/2026/11/17/black-friday-2026-ai-shopping-brand-recommendations/"]]}
+];
+const others=[
+["ICT/모바일","11/25","AI 비서에도 전화번호를…'AI 에이전트 통신사' 등장","AI 서버와 전화망을 연결해 AI 비서에 번호를 부여하는 통신 인프라 기업이 국내외에서 나오고 있습니다.","아이티데일리","https://www.itdaily.kr/news/articleView.html?idxno=243198"],
+["미디어","11/25","디즈니, 첫 CTO 주도로 전사 AI 통합…어도비 파이어플라이로 자체 IP 모델 학습","AI 애니메이션 'Ozzy Fox'는 12월 5일 디즈니+에 공개되며, 내부에서는 표준화 추진을 둘러싼 갈등도 전해집니다.","TheWrap","https://www.thewrap.com/industry-news/business/disney-ceo-josh-dmaro-ai-strategy-cto-karandeep-anand-exclusive/"],
+["미디어","11/25","AI 미디어 기업 Every, 1,750만 달러 시리즈A 유치","기업의 AI 활용을 다루는 미디어·소프트웨어 기업으로, 기업가치 1.1억 달러를 인정받았습니다.","The Next Web","https://thenextweb.com/news/every-17-5m-series-a-ai-native-media"],
+["AI/빅데이터","11/26","법률 AI '슈퍼로이어', 국내 20대 그룹 중 18곳 도입…1년 새 2.5배","3분기 말 기준 189개 기업이 도입했고, 업종별로는 금융·제조·소비재·유통 순입니다.","법률신문","https://www.lawtimes.co.kr/news/articleView.html?idxno=230167"],
+["AI/빅데이터","11/25","Cognition, 코딩 모델 SWE-2.1 공개…자체 벤치마크 점수 약 2배","강화학습만으로 훈련했으며, 자사 측정 기준 이전 모델 대비 점수가 크게 올랐습니다.","Sam on AI","https://samonai.substack.com/p/ai-brief-november-25-2026"],
+["모빌리티","11/26","대전시, 자율주행버스 실주행 데이터 대학에 전국 최초 개방","ETRI·지역 6개 대학과 협약을 맺고 자율주행버스 주행 데이터와 AI 학습 원천 데이터를 공유합니다.","파이낸셜뉴스","https://www.fnnews.com/news/202611260915440937"],
+["로봇","11/25","피규어AI, 테이블 위치 바뀌어도 사과 집는 '피규어 03' 시연 공개","휴머노이드 시연이 연출됐다는 머스크의 지적에 반박하는 영상으로, 실제 자율성 검증이 쟁점이 되고 있습니다.","ZDNet Korea","https://zdnet.co.kr/view/?no=20261126153238"],
+["로봇","11/26","티로보틱스, CES 2027서 제조용 휴머노이드 'TR-WORKS' 북미 첫 공개","제조설비 직접 조작을 시연할 예정이며, 국내 대기업과 공정 적용 기술검증을 진행 중입니다.","뉴스핌","https://www.newspim.com/news/view/20261126000231"],
+["헬스케어","11/26","의료 AI 직무교육 6개 병원 성과 공개…보험심사 업무시간 97% 단축","병원 직원들이 직접 만든 AI 도구로 진료 통계, 간호 근무표, 신생아 중환자 정보 요약 등을 자동화했습니다.","메디팜헬스","https://www.medipharmhealth.co.kr/news/article.html?no=121715"],
+["금융","11/25","KB금융, 담보 사전검토·금융사기 피해구제 심사에 AI 에이전트 적용","KB테크포럼에서 은행·손보·카드 계열사의 AI 에이전트 실무 적용 사례를 공유했습니다.","비즈니스코리아","https://www.businesskorea.co.kr/news/articleView.html?idxno=282281"],
+["금융","11/26","농협은행, 2028년까지 올원뱅크를 AI 에이전트 플랫폼으로 전환","내년 상반기 AI 에이전트 4개를 시범 도입하고 '프롬프트 뱅킹' 시대에 대비합니다.","파이낸셜뉴스","https://www.fnnews.com/news/202611261504447443"],
+["제조·에너지","11/25","LG전자 \"제조 혁신의 종착점은 오토노머스 팩토리\"","가상공장에서 로봇 동작을 검증해 일주일 안에 현장에 투입하는 것이 목표입니다.","이투데이","https://www.etoday.co.kr/news/view/2652954"],
+["제조·에너지","11/26","1.4조 원 '한국형 피지컬 AI 공장' 사업, 내년부터 실제 제조공정 적용","전북에는 기업이 직접 기술을 검증하는 실증형 공장 '메타팩토리'를 구축합니다.","ZDNet Korea","https://zdnet.co.kr/view/?no=20261126151854"],
+["공공·정책","11/25","뉴욕주, AI 챗봇 탑재 장난감 5년간 판매 금지","90일 후 시행되며, 위반 시 하루 최대 1만5천 달러의 벌금이 부과됩니다.","SiliconReport","https://www.siliconreport.com/topic/regulation"]
+];
+const order=["ICT/모바일","미디어","AI/빅데이터","모빌리티","로봇","헬스케어","소비재","금융","제조·에너지","공공·정책"];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+document.getElementById("picks").innerHTML=picks.map(p=>`<li><div><a href="#${p.id}">${esc(p.title)}</a><br><span class="tag">${esc(p.sec)} · ${esc(p.type)} · ${esc(p.region)}</span></div></li>`).join("");
+document.getElementById("stories").innerHTML=picks.map((p,i)=>`<article class="story" id="${p.id}">
+<div class="kicker">Today's Pick ${i+1} · ${esc(p.sec)} · ${esc(p.type)} · ${esc(p.region)} · ${esc(p.date)}</div>
+<h3>${esc(p.title)}</h3>
+<ul>${p.pts.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>
+<div class="why"><b>왜 중요한가</b> ${esc(p.why)}</div>
+<div class="src">출처: ${p.src.map(s=>`<a href="${esc(s[1])}">${esc(s[0])}</a>`).join(" · ")}</div>
+<p class="top"><a href="#picks">↑ Today's Pick 목록으로</a></p>
+</article>`).join("");
+document.getElementById("others").innerHTML=order.map(s=>{const its=others.filter(o=>o[0]===s);if(!its.length)return`<h4>${esc(s)}</h4><div class="item"><p>해당 기간 주요 소식 없음 (Today's Pick 제외)</p></div>`;return`<h4>${esc(s)}</h4>`+its.map(o=>`<div class="item"><strong>${esc(o[2])}</strong><p>${esc(o[3])}</p><span class="src">${esc(o[1])} · 출처: <a href="${esc(o[5])}">${esc(o[4])}</a></span></div>`).join("")}).join("");
+const go=()=>{const h=location.hash.slice(1);if(h){const el=document.getElementById(h);if(el)el.scrollIntoView()}};
+window.addEventListener("hashchange",go);go();
+}
+</script>
+</body>
+</html>
