@@ -94,7 +94,7 @@ def header(R, latest, current=None):
     nav = "".join(f'<a href="{R}sectors/{s}.html"{" aria-current=page" if current == n else ""}>{E(n)}</a>' for n, s in SECTORS)
     nav += f'<a href="{R}monthly/"{" aria-current=page" if current == "monthly" else ""}>월간 리뷰</a>'
     return f"""
-<div class="top"><span>{E(kdate(latest['date']))} · 제{latest['issue']}호 발행</span></div>
+<div class="top"><span><b id="today">{E(kdate(latest['date']))}</b> <span class="latest">· 최신 <a class="u" href="{R}{latest['date']}.html">제{latest['issue']}호</a> {md(latest['date'])} 발행</span></span></div>
 <header class="mast">
 <a class="logo" href="{R}index.html" aria-label="{SITE_NAME} 홈"><img src="{R}assets/sktelink-logo.png" alt="SK텔링크" width="96" height="46"><span>AI Daily Letter</span></a>
 <form class="search" role="search" action="{R}search.html" method="get" data-root="{R}"><input name="q" type="search" placeholder="기사 검색 (예: 로보택시, 규제, 금융)" aria-label="기사 검색" autocomplete="off"><button type="submit">검색</button><div class="drop" aria-live="polite"></div></form>
@@ -103,6 +103,10 @@ def header(R, latest, current=None):
 
 
 SEARCH_JS = """<script>
+{
+const td=document.getElementById('today');
+if(td){try{const p=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'numeric',day:'numeric',weekday:'short'}).formatToParts(new Date());const g=t=>(p.find(x=>x.type===t)||{}).value||'';td.textContent=`${g('year')}년 ${g('month')}월 ${g('day')}일 (${g('weekday')})`}catch(e){}}
+}
 {
 const f=document.querySelector('form.search');
 if(f){const R=f.dataset.root,q=f.querySelector('input'),dr=f.querySelector('.drop');let D=null;

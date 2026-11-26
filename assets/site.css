@@ -177,3 +177,5 @@ footer.site{margin-top:48px;border-top:3px solid var(--ink);padding:20px 0 44px;
 .issues.dl a{display:block}
 .issues.dl small{display:block;color:var(--mute);font-size:13px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kick .big1{display:inline-block;font-size:28px;line-height:1;margin-right:10px;vertical-align:-5px}
+.top b{font-weight:500;color:var(--ink)}
+.top .latest a{color:var(--slate)}
