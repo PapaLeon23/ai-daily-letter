@@ -9,7 +9,7 @@ python3 scripts/build.py 한 번으로 data/*.json 전체에서 아래를 생성
   YYYY-MM-DD.html                  호별 Daily Letter (#pick-1..5 / #sectors 유지)
   monthly/index.html               월간 리뷰 목록 (monthly/YYYY-MM.html 은 월간 작업이 직접 작성)
 """
-import json, glob, os, re, html, datetime
+import json, glob, os, re, html, datetime, hashlib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE_NAME = "SKTL AI Daily Letter"
@@ -19,6 +19,7 @@ SECTORS = [("ICT/통신", "ict"), ("미디어", "media"), ("AI/빅데이터", "a
 SLUG = dict(SECTORS)
 TYPES = ["도입", "활용", "결합·제휴", "인수·투자", "규제·정책", "기술·연구"]
 WD = "월화수목금토일"
+CSS_VER = hashlib.md5(open(os.path.join(ROOT, "assets", "site.css"), "rb").read()).hexdigest()[:8]
 E = lambda s: html.escape(str(s), quote=True)
 
 
@@ -81,7 +82,7 @@ def head(title, R):
 <meta name="robots" content="noindex,nofollow">
 <title>{E(title)}</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{R}assets/site.css">
+<link rel="stylesheet" href="{R}assets/site.css?v={CSS_VER}">
 </head>
 <body>
 <div class="wrap">"""
