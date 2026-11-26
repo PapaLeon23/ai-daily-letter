@@ -152,3 +152,16 @@ footer.site{margin-top:48px;border-top:3px solid var(--ink);padding:20px 0 44px;
 @media (prefers-reduced-motion:reduce){.ncard{transition:none}.ncard:hover{transform:none}}
 @media(max-width:900px){.ngrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.ngrid{grid-template-columns:minmax(0,1fr)}}
+/* letter page */
+.pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0 6px}
+.pcard{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--rule);padding:14px 0 4px;position:relative;padding-left:34px}
+.pcard .pnum{position:absolute;left:0;top:14px;font:700 24px/1 "Noto Serif KR",serif;color:var(--red)}
+.pcard strong{font-size:17px;line-height:1.45}
+.pcard .pw{font-size:14px;color:var(--mute);line-height:1.55}
+.lgrid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.lc a{display:block}
+.lc small{display:block;color:var(--mute);font-size:13px;line-height:1.5;margin-top:3px}
+.sec-card li.lc{display:block}
+@media(max-width:600px){.pgrid{grid-template-columns:minmax(0,1fr)}}
+.post-grid .ngrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:420px){.post-grid .ngrid{grid-template-columns:minmax(0,1fr)}}

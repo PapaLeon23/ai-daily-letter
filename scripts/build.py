@@ -138,6 +138,19 @@ def item_li(a, R):
 
 
 # ---------- pages ----------
+def number_cards(d, R, title="숫자로 보는 오늘"):
+    amap = {a["id"]: a for a in d["arts"]}
+    cards = []
+    for nb in d.get("numbers", []):
+        a = amap.get(f"{d['date']}-{nb['ref']}")
+        if not a:
+            continue
+        cards.append(f"""<a class="ncard" href="{R}articles/{a['id']}.html"><span class="kick s">{E(a['sec'])}</span><strong class="nv">{E(nb['value'])}</strong><span class="nl">{E(nb['label'])}</span><span class="ns">{E(nb.get('source', ''))} · <span class="u">관련 기사 →</span></span></a>""")
+    if not cards:
+        return ""
+    return f"""<div class="label"><h2>{title}</h2><span>제{d['issue']}호 기사에서 뽑은 핵심 수치 · 누르면 해당 기사로 이동</span></div><div class="ngrid">{''.join(cards)}</div>"""
+
+
 def build_home(issues, arts, monthly):
     L = issues[-1]
     picks = [a for a in L["arts"] if a["pick"]]
@@ -162,14 +175,7 @@ def build_home(issues, arts, monthly):
         mblock = f"""<a class="monthly" href="monthly/{E(mf)}" style="display:block"><span class="kick s">최신호</span><h4 class="t">{E(mt)}</h4><p>Insight Report와 10개 분야별 월간 리뷰, 규제 동향을 정리했습니다.</p></a>"""
     else:
         mblock = """<div class="monthly"><span class="kick s">SKTL AI 월간 리뷰 · 2026년 11월호</span><h4>12월 1일(화) 첫 발행 예정</h4><p>한 달간 가장 임팩트 있었던 흐름을 Insight Report로 깊게 다루고, 10개 분야별 월간 리뷰와 규제 동향을 정리합니다.</p></div>"""
-    amap = {a["id"]: a for a in L["arts"]}
-    ncards = []
-    for nb in L.get("numbers", []):
-        a = amap.get(f"{L['date']}-{nb['ref']}")
-        if not a:
-            continue
-        ncards.append(f"""<a class="ncard" href="articles/{a['id']}.html"><span class="kick s">{E(a['sec'])}</span><strong class="nv">{E(nb['value'])}</strong><span class="nl">{E(nb['label'])}</span><span class="ns">{E(nb.get('source', ''))} · <span class="u">관련 기사 →</span></span></a>""")
-    nums = f"""<div class="label"><h2>숫자로 보는 오늘</h2><span>제{L['issue']}호 기사에서 뽑은 핵심 수치 · 누르면 해당 기사로 이동</span></div><div class="ngrid">{''.join(ncards)}</div>""" if ncards else ""
+    nums = number_cards(L, "")
     past = "".join(f'<li><a class="t" href="monthly/{E(f)}">{E(t)}<span>{E(f[:7].replace("-", "."))}</span></a></li>' for f, t in monthly[1:6]) \
         or '<li><span class="meta" style="padding:11px 0;display:block">지난 호가 아직 없습니다 · 11월호(12월 1일 발행)가 첫 호입니다</span></li>'
     out = head(SITE_NAME, "") + header("", L) + f"""
@@ -258,19 +264,20 @@ def build_letters(issues, monthly):
     L = issues[-1]
     for d in issues:
         picks = [a for a in d["arts"] if a["pick"]]
-        lst = "".join(f"""<li><a href="#pick-{a['pick']}"><span class="num">{a['pick']}</span><span><span class="kick">{E(a['sec'])} · {E(a['type'])}</span><strong class="t">{E(a['title'])}</strong></span></a></li>""" for a in picks)
-        stories = "".join(f"""<article class="story" id="pick-{a['pick']}"><span class="kick">Today's Pick {a['pick']} · {E(tagline(a))} · {md(a['date'])}</span>
-<h3>{E(a['title'])}</h3><ul class="pts">{''.join(f'<li>{E(t)}</li>' for t in a['points'])}</ul>
-<p class="why"><b>왜 중요한가</b>{E(a['why'])}</p>
-<p class="meta">출처: {' · '.join(f'<a class="u" href="{E(s["url"])}">{E(s["name"])}</a>' for s in a['sources'])}</p>
-<a class="more" href="articles/{a['id']}.html">기사 페이지로 →</a></article>""" for a in picks)
-        secs, toc = [], []
-        for n, s in SECTORS:
+        p1 = picks[0]
+        lead = f"""<a class="hero-main" id="pick-1" href="articles/{p1['id']}.html" style="border-right:0;padding-right:0">
+<span class="kick">Today's Pick 1 · {E(tagline(p1))}</span>
+<h2 class="t">{E(p1['title'])}</h2>
+<ul class="pts">{''.join(f'<li>{E(t)}</li>' for t in p1['points'])}</ul>
+<p class="why"><b>왜 중요한가</b>{E(p1['why'])}</p>
+<span class="meta">{md(p1['date'])} · 출처 {len(p1['sources'])}건 · <span class="u" style="color:var(--slate)">기사 보기 →</span></span></a>"""
+        rest = "".join(f"""<a class="pcard" id="pick-{a['pick']}" href="articles/{a['id']}.html"><span class="pnum">{a['pick']}</span><span class="kick">{E(tagline(a))}</span><strong class="t">{E(a['title'])}</strong><span class="pw">{E(a['why'])}</span><span class="meta">{md(a['date'])} · <span class="u" style="color:var(--slate)">기사 보기 →</span></span></a>""" for a in picks[1:])
+        cards, toc = [], []
+        for n, s_ in SECTORS:
             its = [a for a in d["arts"] if not a["pick"] and a["sec"] == n]
-            rows = "".join(item_li(a, "") for a in its)
-            secs.append(f"""<div class="label" id="sec-{s}" style="margin-top:22px"><h3 style="font-size:18px">{E(n)}</h3><a href="sectors/{s}.html">분야 전체 ›</a></div><ul class="list">{rows or '<li><span></span><p>해당 기간 주요 소식 없음 (Today&#39;s Pick 제외)</p></li>'}</ul>""")
-            toc.append(f'<li><a href="#sec-{s}"><span><span class="t">{E(n)}</span></span><small style="margin:0">{len(its)}건</small></a></li>')
-        toc_picks = "".join(f'<li><a href="#pick-{a["pick"]}"><span class="n2">{a["pick"]}</span><span><span class="t">{E(a["title"])}</span><small>{E(a["sec"])}</small></span></a></li>' for a in picks)
+            rows = "".join(f"""<li class="lc"><a href="articles/{a['id']}.html"><span class="t">{E(a['title'])}</span><small>{E(a['summary'])}</small></a></li>""" for a in its)
+            cards.append(f"""<section class="sec-card" id="sec-{s_}"><header><a href="sectors/{s_}.html">{E(n)}</a><span>{len(its)}건</span></header><ul>{rows or '<li class="empty">해당 기간 주요 소식 없음</li>'}</ul></section>""")
+            toc.append(f'<li><a href="#sec-{s_}"><span><span class="t">{E(n)}</span></span><small style="margin:0">{len(its)}건</small></a></li>')
         past = "".join(f'<li><a href="{x["date"]}.html"{" aria-current=page" if x["date"] == d["date"] else ""}><span><span class="t">제{x["issue"]}호 · {E(kdate(x["date"]))}</span><small>Pick 5 · 분야별 {len(x["others"])}건</small></span></a></li>' for x in list(reversed(issues))[:6])
         if monthly:
             mf, mt = monthly[0]
@@ -281,11 +288,12 @@ def build_letters(issues, monthly):
 <div class="page-head"><span class="kick">Daily Letter</span><h1>제{d['issue']}호 · {E(kdate(d['date']))}</h1><p>수집 범위 {E(d['range'])} · Today's Pick 5건 · 분야별 소식 {len(d['others'])}건</p></div>
 <div class="post-grid" style="margin-top:8px">
 <div>
-<div class="label" id="picks"><h2>Today's Pick</h2></div>
-<ol class="side" style="padding-left:0">{lst}</ol>
-{stories}
+<div class="label" id="picks"><h2>Today's Pick</h2><span>각 소식을 누르면 요약과 원문 링크가 있는 기사 페이지로 이동</span></div>
+{lead}
+<div class="pgrid">{rest}</div>
+{number_cards(d, "")}
 <div class="label" id="sectors"><h2>분야별 소식</h2><span>Today's Pick에 실린 소식은 제외</span></div>
-{''.join(secs)}
+<div class="grid lgrid">{''.join(cards)}</div>
 </div>
 <aside class="post-side" aria-label="이번 호 바로가기">
 <section class="side-box"><h2>분야별 소식 바로가기</h2><ul class="toc">{''.join(toc)}</ul></section>
